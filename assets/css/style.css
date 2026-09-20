@@ -1246,3 +1246,14 @@ html.js.page-out body { opacity: 0; transform: translateY(-6px); transition-dura
 
 /* to-top button: appears with a pop */
 .to-top { transition: opacity .3s var(--ease), transform .35s cubic-bezier(.2,.9,.25,1.2), box-shadow .3s; }
+
+/* ---- v30: news page rows open by default (no animation on first paint); join column balance ---- */
+#news-all .news-row.open .nr-detail { transition: none; }
+.pager .pg-info { font-family: var(--font-mono); font-size: 12px; color: var(--faint); margin-left: 10px; }
+.join-light { grid-template-columns: minmax(0, 1fr) 400px; gap: clamp(32px, 4vw, 56px); }
+@media (max-width: 900px) { .join-light { grid-template-columns: 1fr; } }
+.join-kr, .join-en { max-width: none; word-break: normal; overflow-wrap: anywhere; }
+.join-kr { font-size: 15.5px; line-height: 1.85; }
+.join-en { font-size: 14.5px; line-height: 1.7; }
+/* v31: research intro paragraph left-aligned (heading stays centered) */
+.about-intro p { text-align: left; }

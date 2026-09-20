@@ -23,8 +23,8 @@ window.EPIC_NEWS = [
   },
   {
     date: "2026.03", type: "Notice",
-    title: "EPIC Lab 시작",
-    text: "2026년 3월 가천대학교 화공생명배터리공학부에 EPIC Lab을 설립하였습니다.",
+    title: "EPIC Lab open",
+    text: "2026년 3월 가천대학교 화공생명배터리공학부에서 EPIC Lab이 시작하였습니다.",
     img: null, link: null
   }
 ];

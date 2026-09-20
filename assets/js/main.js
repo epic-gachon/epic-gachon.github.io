@@ -269,11 +269,12 @@
       const start = (pg - 1) * PER;
       newsAll.innerHTML = news.slice(start, start + PER).map((n, i) => newsRow(n, start + i)).join("");
       $$(".reveal", newsAll).forEach((el) => el.classList.add("in"));
-      pager.innerHTML = pages > 1 ? [
+      $$(".news-row.expandable", newsAll).forEach((li) => { li.classList.add("open"); const b = $(".nr-toggle", li); if (b) b.setAttribute("aria-expanded", "true"); });
+      pager.innerHTML = [
         `<button type="button" class="pg-arrow" data-pg="${pg - 1}" ${pg === 1 ? "disabled" : ""} aria-label="Previous">‹</button>`,
         ...Array.from({ length: pages }, (_, k) => `<button type="button" class="pg-num${k + 1 === pg ? " active" : ""}" data-pg="${k + 1}" ${k + 1 === pg ? 'aria-current="page"' : ""}>${k + 1}</button>`),
         `<button type="button" class="pg-arrow" data-pg="${pg + 1}" ${pg === pages ? "disabled" : ""} aria-label="Next">›</button>`
-      ].join("") : "";
+      ].join("");
       if (scroll) { const top = $("#news") || newsAll; top.scrollIntoView({ behavior: "smooth", block: "start" }); }
       if (pages > 1) history.replaceState(null, "", pg === 1 ? location.pathname : `${location.pathname}?page=${pg}`);
     };

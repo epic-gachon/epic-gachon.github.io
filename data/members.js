@@ -9,3 +9,7 @@
 window.EPIC_MEMBERS = [
   { name: "Hyunmin Shin", email: "shm041005@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/hyunmin-shin.jpg" },
 ];
+
+/* Alumni — same fields as above; leave empty until there are alumni */
+window.EPIC_ALUMNI = [
+];

@@ -1092,7 +1092,7 @@ html.js.page-out body { opacity: 0; transform: translateY(-6px); transition-dura
 .pi-photo .pi-contact { gap: 6px; margin-top: 12px; }
 .pi-photo .pi-contact a { padding: 6px 11px; font-size: 13px; border-radius: 9px; gap: 7px; }
 .pi-photo .pi-contact svg { width: 14px; height: 14px; }
-.pi-profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
-.pi-profiles a { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 8px; border-radius: 9px; font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--muted); background: var(--surface-2); text-decoration: none !important; transition: color .2s, background .2s, transform .2s; }
-.pi-profiles a:hover { color: var(--navy-950); background: var(--cyan-soft); transform: translateY(-1px); }
-.pi-profiles svg { width: 14px; height: 14px; color: var(--cyan-deep); }
+.pi-profiles { display: flex; gap: 14px; margin-top: 12px; padding-left: 2px; }
+.pi-profiles a { display: block; width: 30px; height: 30px; border-radius: 50%; transition: transform .2s, box-shadow .2s; }
+.pi-profiles a:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(5, 11, 21, .18); }
+.pi-profiles img { display: block; width: 100%; height: 100%; }

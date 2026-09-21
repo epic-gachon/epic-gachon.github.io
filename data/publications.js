@@ -101,7 +101,7 @@ window.EPIC_PUBS = [
     authors: "Kyobin Park†, Juyeop Song†, Kyu Tae Lee*",
     vol: "6", pages: "e202300344",
     url: "https://chemistry-europe.onlinelibrary.wiley.com/doi/10.1002/batt.202300344",
-    img: null, tags: ["Review", "Fast charging", "Li metal"]
+    img: "p08.jpg", tags: ["Review", "Fast charging", "Li metal"]
   },
   {
     n: 7, year: 2023, journal: "Advanced Science", featured: true,
@@ -157,6 +157,6 @@ window.EPIC_PUBS = [
     authors: "Jeonghyeop Lee†, Eun-Seo Won†, Dong-Min Kim, Hyunchul Kim, Bomee Kwon, Kyobin Park, Seunghyeon Jo, Suyeon Lee, Jong-Won Lee*, Kyu Tae Lee*",
     vol: "13", pages: "33056–33065",
     url: "https://pubs.acs.org/doi/abs/10.1021/acsami.1c07856",
-    img: null, tags: ["Li metal", "3D host"]
+    img: "p01.jpg", tags: ["Li metal", "3D host"]
   }
 ];

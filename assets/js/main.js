@@ -57,6 +57,17 @@
     pills.forEach((a) => a.addEventListener("click", () => setActive(a.dataset.spy)));
   }
 
+  /* ---------- Top-bar Apply chooser + "Top" links ---------- */
+  const applyWrap = $(".topbar-apply");
+  if (applyWrap) {
+    const btn = $(".topbar-cta", applyWrap);
+    const setOpen = (o) => { applyWrap.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(!applyWrap.classList.contains("open")); });
+    document.addEventListener("click", (e) => { if (!applyWrap.contains(e.target)) setOpen(false); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
+  }
+  $$('a[href="#top"]').forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }));
+
   /* ---------- Mobile menu ---------- */
   const toggle = $(".nav-toggle");
   const links = $(".nav-links");
@@ -281,7 +292,7 @@
   };
 
   const recentBox = $("#pub-recent");
-  if (recentBox) recentBox.innerHTML = pubs.slice(0, 6).map(pubCard).join("");
+  if (recentBox) recentBox.innerHTML = pubs.slice(0, 5).map(pubCard).join("");
 
   const openAll = (list) => $$(".news-row.expandable", list).forEach((li) => { li.classList.add("open"); const b = $(".nr-toggle", li); if (b) b.setAttribute("aria-expanded", "true"); });
   const newsAll = $("#news-all");
@@ -292,28 +303,27 @@
   const noticeBox = $("#news-list");
   if (noticeBox) {
     bindNewsToggle(noticeBox);
-    paginate(noticeBox, news, 5, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", compact: true });
+    paginate(noticeBox, news, 8, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", compact: true });
   }
 
 
   /* ---------- Gallery ---------- */
   const gal = window.EPIC_GALLERY || [];
   const galItem = (g) => `
-    <a class="gcard reveal" href="#" data-lightbox="assets/img/${esc(g.src)}" data-caption="${esc(g.cap)}${g.date ? " · " + esc(g.date) : ""}">
+    <a class="gcard reveal" href="#" data-lightbox="assets/img/${esc(g.src)}" data-caption="${g.date ? esc(g.date) + " · " : ""}${esc(g.title || g.cap || "")}">
       <span class="gcard-img"><img src="assets/img/${esc(g.src)}" alt="${esc(g.cap)}" loading="lazy"></span>
-      <span class="gcard-title">${esc(g.cap)}</span>
-      ${g.date ? `<span class="gcard-date">${esc(g.date)}</span>` : ""}
+      <span class="gcard-meta">${g.date ? `<span class="gcard-date">${esc(g.date)}</span>` : ""}<span class="gcard-title">${esc(g.title || g.cap || "")}</span></span>
     </a>`;
-  const soon = (label) => `<div class="gcard soon"><span class="gcard-img"><span class="soon-lbl">Coming soon</span></span><span class="gcard-title">${label}</span></div>`;
-  const FILL = ["Lab photos", "Group meetings", "Conferences", "Lab life", "Campus", "Workshops"];
+  const soon = () => `<div class="gcard soon"><span class="gcard-img"><span class="soon-lbl">Coming soon</span></span></div>`;
+  const FILL = Array(6).fill("");
   const galHome = $("#gallery-home");
   if (galHome) {
     const render = (slice, start) => {
       const items = slice.map(galItem);
-      const fill = start === 0 ? FILL.slice(0, Math.max(0, 4 - items.length)).map(soon) : [];
+      const fill = start === 0 ? FILL.slice(0, Math.max(0, 6 - items.length)).map(soon) : [];
       return items.concat(fill).join("");
     };
-    paginate(galHome, gal, 4, render, { label: "Gallery pages", compact: true });
+    paginate(galHome, gal, 6, render, { label: "Gallery pages", compact: true });
   }
   const galAll = $("#gallery-all");
   if (galAll) {
@@ -379,13 +389,23 @@
     IX = W * 0.505; ripples = []; nodes = []; flashes = [];
     N = W < 700 ? 6 : W < 1100 ? 8 : 11;                          // per side
     ions = [];
-    for (let i = 0; i < N; i++) { ions.push(makeIon(-1, rnd(0, IX - 60))); ions.push(makeIon(1, rnd(IX + 60, W))); }
+    /* seed: ~half the ions already close to the band, plus 3 pairs lined up to react within the first second */
+    for (let i = 0; i < N; i++) {
+      const near = i % 2 === 0;
+      ions.push(makeIon(-1, near ? rnd(IX - 260, IX - 60) : rnd(0, IX - 260)));
+      ions.push(makeIon(1,  near ? rnd(IX + 60, IX + 260) : rnd(IX + 260, W)));
+    }
+    for (let k = 0; k < 3; k++) {
+      const y = H * (0.25 + 0.25 * k) + rnd(-20, 20);
+      const a = makeIon(-1, IX - rnd(34, 60), y), b = makeIon(1, IX + rnd(34, 60), y + rnd(-8, 8));
+      a.sol = b.sol = 0.35; ions.push(a, b);
+    }
   };
   /* side: -1 = cyan from the left, +1 = lime from the right */
   const makeIon = (side, x, y) => {
     const kind = side < 0 ? CYAN : LIME, nsh = side < 0 ? 3 : 4;
     return { side, kind, x, y: y == null ? rnd(H * 0.08, H * 0.92) : y, r: side < 0 ? 3.2 : 3.8,
-      vx: -side * rnd(0.04, 0.12), vy: rnd(-0.08, 0.08), ph: rnd(0, 6.28), sol: 1, wait: 0,
+      vx: -side * rnd(0.18, 0.4), vy: rnd(-0.08, 0.08), ph: rnd(0, 6.28), sol: 1, wait: 0,
       shell: Array.from({ length: nsh }, (_, i) => ({ a: (i / nsh) * 6.28 + rnd(-.3, .3), r: rnd(9, 13), w: rnd(0.015, 0.03) * (Math.random() < .5 ? 1 : -1) })) };
   };
   const react = (a, b) => {
@@ -440,7 +460,7 @@
       const a = ions[i], b = ions[j]; const dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy; if (d2 < 1 || d2 > 110 * 110) continue; const d = Math.sqrt(d2);
       let f;
       if (a.side === b.side) f = d < 30 ? 0.06 * (1 - d / 30) : 0;                                  // crowd control
-      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.03 * (1 - d / 110) : 0; }   // partners pull together
+      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.05 * (1 - d / 110) : 0; }   // partners pull together
       if (f) { const fx = (dx / d) * f, fy = (dy / d) * f; a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy; }
       if (a.side !== b.side && d < 80) { ctx.strokeStyle = `rgba(${WHITE},${(0.12 * (1 - d / 80)).toFixed(3)})`; ctx.lineWidth = .7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
     }
@@ -454,10 +474,10 @@
     for (const p of ions) {
       p.ph += 0.02 * dt; p.vy += rnd(-0.02, 0.02); p.vy *= 0.97;
       const d = Math.abs(IX - p.x);                              // distance to the band
-      p.vx += -p.side * 0.0004 * dt;                             // gentle field pulling toward the band
-      if (d < 90) { p.vx *= 0.975; p.sol = Math.max(0, p.sol - 0.02 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
+      p.vx += -p.side * 0.0016 * dt;                             // field pulling toward the band
+      if (d < 90) { p.vx *= 0.985; p.sol = Math.max(0, p.sol - 0.035 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
       if (d < 22) { p.wait += dt; p.vx *= 0.9; if (p.side * (IX - p.x) > 0) p.vx += p.side * 0.02; } // hover at the band, do not cross
-      if (p.wait > 420) { p.vx = p.side * 0.5; p.wait = -600; }   // gave up waiting: drift back and retry
+      if (p.wait > 240) { p.vx = p.side * 0.5; p.wait = -400; }   // gave up waiting: drift back and retry
       p.x += p.vx * dt; p.y += (p.vy + Math.sin(p.ph) * 0.12) * dt;
       if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); } if (p.y > H - 10) { p.y = H - 10; p.vy = -Math.abs(p.vy); }
       if (p.x < -30 || p.x > W + 30) p.dead = true;
@@ -476,8 +496,8 @@
     ions = ions.filter((p) => !p.dead);
     /* keep both populations topped up from their own edges */
     const nl = ions.filter((p) => p.side < 0).length, nr = ions.length - nl;
-    if (nl < N && Math.random() < 0.015) ions.push(makeIon(-1, rnd(-30, -10)));
-    if (nr < N && Math.random() < 0.015) ions.push(makeIon(1, rnd(W + 10, W + 30)));
+    if (nl < N && Math.random() < 0.04) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
+    if (nr < N && Math.random() < 0.04) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
     raf = requestAnimationFrame(draw);
   };
   const start = () => { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(draw); };

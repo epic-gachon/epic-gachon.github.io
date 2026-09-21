@@ -285,7 +285,7 @@ button {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 19px;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
   color: #fff;
 }
 .brand .brand-sub {
@@ -3188,8 +3188,8 @@ html.has-subnav {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 10.5px;
-  letter-spacing: 0.05em;
-  word-spacing: -0.02em;
+  letter-spacing: 0.02em;
+  word-spacing: 0;
 }
 .page-head .head-lead {
   margin-top: 18px;
@@ -4152,34 +4152,17 @@ html.js.page-out body {
 .news-row .tagcol .tag {
   white-space: nowrap;
 }
-.partner-logos {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 28px 44px;
-}
-.partner-logos img {
-  height: 72px;
-  width: auto;
-  max-width: 200px;
-  object-fit: contain;
-  display: block;
-  filter: saturate(0.95);
-  transition: transform 0.3s var(--ease);
-}
-@media (max-width: 640px) {
-  .partner-logos {
-    gap: 20px 28px;
-  }
-  .partner-logos img {
-    height: 56px;
-    max-width: 150px;
-  }
-}
+/* Research partners (News page): logos only, two centred rows; SNU and ANL sit in the middle of the first row.
+   Rule: emblems (.lg-mark) share one height, wordmarks (.lg-word) a smaller one so visual weight matches; per-logo tweaks via lg-* classes. */
+.partner-logos { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 48px; }
+.partner-logos .row-break { flex-basis: 100%; height: 0; }
+.partner-logos img { display: block; width: auto; object-fit: contain; transition: transform .3s var(--ease); }
+.partner-logos .lg-mark { height: 64px; }
+.partner-logos .lg-word { height: 34px; }
+.partner-logos .lg-keri { height: 40px; }
+.partner-logos .lg-keti { height: 54px; }
+.partner-logos .lg-mintech { height: 38px; }
+@media (max-width: 640px) { .partner-logos { gap: 22px 28px; } .partner-logos .row-break { display: none; } .partner-logos .lg-mark { height: 50px; } .partner-logos .lg-word { height: 26px; } .partner-logos .lg-keri { height: 30px; } .partner-logos .lg-keti { height: 42px; } .partner-logos .lg-mintech { height: 28px; } }
 .news-home .nr-toggle {
   min-width: 0;
   max-width: 100%;
@@ -4441,3 +4424,30 @@ html.js.page-out body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ---- v49 ---- */
+/* Apply card: tighter vertical rhythm, subtitle matches the KR line under "Email or online application form" */
+.join-light .apply-card { padding: clamp(24px, 3vw, 32px) clamp(24px, 3.2vw, 40px); justify-content: center; }
+.apply-card .apply-sub { display: block; margin-top: 4px; font-size: 14px; font-weight: 500; color: var(--muted); }
+.join-light .apply-line { margin-top: 16px; }
+.join-light .apply-note { margin-top: 14px; }
+.join-light .apply-btns { margin-top: 16px; gap: 10px; }
+.join-light .apply-btns .btn { padding-top: 15px; padding-bottom: 15px; }
+.apply-extra { margin-top: 16px; padding-top: 16px; grid-template-columns: 1fr; }
+
+/* Contact page: single heading band; map stretches to the text column */
+.contact-bg .contact-grid { align-items: stretch; }
+.contact-bg .map, .contact-bg .map iframe { height: 100%; min-height: 380px; }
+.contact-bg .contact-grid > .reveal { display: flex; flex-direction: column; justify-content: center; }
+@media (max-width: 900px) { .contact-bg .map, .contact-bg .map iframe { height: 300px; min-height: 300px; } }
+
+/* Home: Gallery column stretches to the News column; cards fill the height, pagers align */
+.duo { align-items: stretch; }
+.duo-col { display: flex; flex-direction: column; }
+.duo-col > .news-full { flex: 1; }
+#gallery-home.duo-gallery { flex: 1; grid-auto-rows: 1fr; align-items: stretch; }
+#gallery-home .gcard { display: flex; flex-direction: column; height: 100%; }
+#gallery-home .gcard .gcard-img { position: relative; flex: 1; aspect-ratio: auto; min-height: 200px; }
+#gallery-home .gslides { position: absolute; inset: 0; }
+#gallery-home .gcard-cap { flex: none; }
+.duo-col .pager { margin-top: auto; padding-top: 20px; }

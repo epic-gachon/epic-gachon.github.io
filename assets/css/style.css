@@ -1263,3 +1263,13 @@ html.js.page-out body { opacity: 0; transform: translateY(-6px); transition-dura
 .pager-sm button { min-width: 32px; height: 32px; padding: 0 10px; font-size: 13px; }
 .pager-sm .pg-arrow { font-size: 16px; }
 .duo-col .pager { justify-content: center; }
+/* v33: home recent publications — 2×3 grid with pager */
+#pub-recent + .pager { margin-top: 28px; }
+/* v33b: Recent Publications header matches News/Gallery (+ link at top right) */
+.pub-head { margin-bottom: 0; }
+.pub-head + .pub-featured { margin-top: 22px; }
+/* v33c: home Recent Publications — one paper per row (1×6) */
+#pub-recent.pub-featured { grid-template-columns: 1fr; gap: 16px; }
+#pub-recent .pub-card { grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: center; padding: 22px 26px; }
+#pub-recent .pub-card h3 { font-size: 17px; }
+@media (max-width: 800px) { #pub-recent .pub-card { grid-template-columns: 1fr; } }

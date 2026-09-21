@@ -4461,3 +4461,5 @@ html.has-subnav { scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px); 
 /* Home: Gallery column a little wider (still narrower than News) */
 .duo { grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr); }
 @media (max-width: 900px) { .duo { grid-template-columns: 1fr; } }
+/* Research partners: more air between the heading and the logo rows */
+.partner-logos { margin-top: 36px; }

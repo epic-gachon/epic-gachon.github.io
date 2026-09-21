@@ -389,23 +389,23 @@
     IX = W * 0.505; ripples = []; nodes = []; flashes = [];
     N = W < 700 ? 6 : W < 1100 ? 8 : 11;                          // per side
     ions = [];
-    /* seed: ~half the ions already close to the band, plus 3 pairs lined up to react within the first second */
+    /* seed: about a third of the ions start at a moderate distance from the band, so the first reactions follow within a few seconds */
     for (let i = 0; i < N; i++) {
-      const near = i % 2 === 0;
-      ions.push(makeIon(-1, near ? rnd(IX - 260, IX - 60) : rnd(0, IX - 260)));
-      ions.push(makeIon(1,  near ? rnd(IX + 60, IX + 260) : rnd(IX + 260, W)));
+      const near = i % 3 === 0;
+      ions.push(makeIon(-1, near ? rnd(IX - 260, IX - 110) : rnd(0, IX - 260)));
+      ions.push(makeIon(1,  near ? rnd(IX + 110, IX + 260) : rnd(IX + 260, W)));
     }
-    for (let k = 0; k < 3; k++) {
-      const y = H * (0.25 + 0.25 * k) + rnd(-20, 20);
-      const a = makeIon(-1, IX - rnd(34, 60), y), b = makeIon(1, IX + rnd(34, 60), y + rnd(-8, 8));
-      a.sol = b.sol = 0.35; ions.push(a, b);
-    }
+    /* two pairs set up so the first reactions arrive after ~2–3 s and ~5 s, then the flow takes over */
+    [[0.38, 56, 66], [0.66, 90, 105]].forEach(([fy, lo, hi]) => {
+      const y = H * fy + rnd(-20, 20);
+      ions.push(makeIon(-1, IX - rnd(lo, hi), y), makeIon(1, IX + rnd(lo, hi), y + rnd(-8, 8)));
+    });
   };
   /* side: -1 = cyan from the left, +1 = lime from the right */
   const makeIon = (side, x, y) => {
     const kind = side < 0 ? CYAN : LIME, nsh = side < 0 ? 3 : 4;
     return { side, kind, x, y: y == null ? rnd(H * 0.08, H * 0.92) : y, r: side < 0 ? 3.2 : 3.8,
-      vx: -side * rnd(0.18, 0.4), vy: rnd(-0.08, 0.08), ph: rnd(0, 6.28), sol: 1, wait: 0,
+      vx: -side * rnd(0.1, 0.24), vy: rnd(-0.08, 0.08), ph: rnd(0, 6.28), sol: 1, wait: 0,
       shell: Array.from({ length: nsh }, (_, i) => ({ a: (i / nsh) * 6.28 + rnd(-.3, .3), r: rnd(9, 13), w: rnd(0.015, 0.03) * (Math.random() < .5 ? 1 : -1) })) };
   };
   const react = (a, b) => {
@@ -474,10 +474,10 @@
     for (const p of ions) {
       p.ph += 0.02 * dt; p.vy += rnd(-0.02, 0.02); p.vy *= 0.97;
       const d = Math.abs(IX - p.x);                              // distance to the band
-      p.vx += -p.side * 0.0016 * dt;                             // field pulling toward the band
-      if (d < 90) { p.vx *= 0.985; p.sol = Math.max(0, p.sol - 0.035 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
+      p.vx += -p.side * 0.001 * dt;                             // field pulling toward the band
+      if (d < 90) { p.vx *= 0.992; p.sol = Math.max(0, p.sol - 0.025 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
       if (d < 22) { p.wait += dt; p.vx *= 0.9; if (p.side * (IX - p.x) > 0) p.vx += p.side * 0.02; } // hover at the band, do not cross
-      if (p.wait > 240) { p.vx = p.side * 0.5; p.wait = -400; }   // gave up waiting: drift back and retry
+      if (p.wait > 320) { p.vx = p.side * 0.5; p.wait = -500; }   // gave up waiting: drift back and retry
       p.x += p.vx * dt; p.y += (p.vy + Math.sin(p.ph) * 0.12) * dt;
       if (p.y < 10) { p.y = 10; p.vy = Math.abs(p.vy); } if (p.y > H - 10) { p.y = H - 10; p.vy = -Math.abs(p.vy); }
       if (p.x < -30 || p.x > W + 30) p.dead = true;
@@ -496,8 +496,8 @@
     ions = ions.filter((p) => !p.dead);
     /* keep both populations topped up from their own edges */
     const nl = ions.filter((p) => p.side < 0).length, nr = ions.length - nl;
-    if (nl < N && Math.random() < 0.04) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
-    if (nr < N && Math.random() < 0.04) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
+    if (nl < N && Math.random() < 0.022) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
+    if (nr < N && Math.random() < 0.022) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
     raf = requestAnimationFrame(draw);
   };
   const start = () => { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(draw); };

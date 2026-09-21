@@ -288,6 +288,7 @@
       </div>
     </article>`;
   $$("[data-people]").forEach((box) => { box.innerHTML = people.map(personCard).join(""); });
+  $$("[data-alumni]").forEach((box) => { box.innerHTML = (window.EPIC_ALUMNI || []).map(personCard).join(""); });
 
   /* ---------- Gallery ---------- */
   const gal = window.EPIC_GALLERY || [];

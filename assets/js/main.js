@@ -66,6 +66,13 @@
     document.addEventListener("click", (e) => { if (!applyWrap.contains(e.target)) setOpen(false); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") setOpen(false); });
   }
+  // Hero scroll cue: smooth-scrolls to the first section, fades once the visitor has scrolled
+  const cue = $(".scroll-cue");
+  if (cue) {
+    cue.addEventListener("click", (e) => { const t = $(cue.getAttribute("href")); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth", block: "start" }); } });
+    const cueSpy = () => cue.classList.toggle("hide", window.scrollY > 120);
+    window.addEventListener("scroll", cueSpy, { passive: true }); cueSpy();
+  }
   $$('a[href="#top"]').forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }));
 
   /* ---------- Mobile menu ---------- */
@@ -95,6 +102,8 @@
   });
 
   /* ---------- Reveal on scroll ---------- */
+  // Lists whose children pop in one by one get the class on the container
+  $$(".project-list, .partner-logos").forEach((el) => el.classList.add("reveal"));
   const reveals = $$(".reveal");
   if ("IntersectionObserver" in window && reveals.length) {
     const io = new IntersectionObserver((entries) => {

@@ -165,8 +165,6 @@
     </article>`;
   const featuredBox = $("#pub-featured");
   if (featuredBox) featuredBox.innerHTML = pubs.filter((p) => p.featured).slice(0, 4).map(pubCard).join("");
-  const recentBox = $("#pub-recent");
-  if (recentBox) recentBox.innerHTML = pubs.slice(0, 4).map(pubCard).join("");
   $$("[data-count-pubs]").forEach((el) => { el.textContent = pubs.length; });
 
   const listBox = $("#pub-list");
@@ -281,6 +279,9 @@
     pager.addEventListener("click", (e) => { const b = e.target.closest("button[data-pg]"); if (b && !b.disabled) go(+b.dataset.pg, !!opts.scrollTo); });
     go(opts.param ? +(new URLSearchParams(location.search).get(opts.param) || 1) : 1, false);
   };
+
+  const recentBox = $("#pub-recent");
+  if (recentBox) recentBox.innerHTML = pubs.slice(0, 6).map(pubCard).join("");
 
   const openAll = (list) => $$(".news-row.expandable", list).forEach((li) => { li.classList.add("open"); const b = $(".nr-toggle", li); if (b) b.setAttribute("aria-expanded", "true"); });
   const newsAll = $("#news-all");

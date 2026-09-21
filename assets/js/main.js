@@ -276,11 +276,34 @@
 
   /* ---------- Gallery ---------- */
   const gal = window.EPIC_GALLERY || [];
-  const galItem = (g) => `
-    <a class="gcard reveal" href="#" data-lightbox="assets/img/${esc(g.src)}" data-caption="${g.date ? esc(g.date) + " · " : ""}${esc(g.title || g.cap || "")}">
-      <span class="gcard-img"><img src="assets/img/${esc(g.src)}" alt="${esc(g.cap)}" loading="lazy"></span>
-      <span class="gcard-meta">${g.date ? `<span class="gcard-date">${esc(g.date)}</span>` : ""}<span class="gcard-title">${esc(g.title || g.cap || "")}</span></span>
-    </a>`;
+  const MONTHS = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
+  const galDate = (d) => { const m = /^(\d{4})\.(\d{1,2})/.exec(d || ""); return m ? `${MONTHS[+m[2] - 1]} ${m[1]}` : esc(d || ""); };
+  const galItem = (g) => {
+    const photos = g.photos || (g.src ? [g.src] : []);
+    const title = esc(g.title || g.cap || "");
+    const cap = `${galDate(g.date)}${title ? " · " + title : ""}`;
+    const multi = photos.length > 1;
+    return `
+    <div class="gcard reveal${multi ? " multi" : ""}">
+      <div class="gcard-img">
+        <div class="gslides">${photos.map((src, i) => `<a class="gslide" href="#" data-lightbox="assets/img/${esc(src)}" data-caption="${cap}"><img src="assets/img/${esc(src)}" alt="${title}${multi ? ` (${i + 1}/${photos.length})` : ""}" loading="lazy"></a>`).join("")}</div>
+        ${multi ? `<button type="button" class="gnav prev" aria-label="Previous photo">‹</button><button type="button" class="gnav next" aria-label="Next photo">›</button>` : ""}
+      </div>
+      <div class="gdots">${multi ? photos.map((_, i) => `<span class="${i ? "" : "on"}"></span>`).join("") : ""}</div>
+      <div class="gcard-cap">${g.date ? `<span class="gcard-date">${galDate(g.date)}</span>` : ""}<span class="gcard-title">${title}</span></div>
+    </div>`;
+  };
+  // carousel: arrows + dots follow the horizontal scroll position
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".gnav"); if (!btn) return;
+    const track = btn.parentElement.querySelector(".gslides");
+    track.scrollBy({ left: (btn.classList.contains("next") ? 1 : -1) * track.clientWidth, behavior: "smooth" });
+  });
+  document.addEventListener("scroll", (e) => {
+    const track = e.target; if (!(track instanceof Element) || !track.classList.contains("gslides")) return;
+    const i = Math.round(track.scrollLeft / track.clientWidth);
+    track.closest(".gcard").querySelectorAll(".gdots span").forEach((d, k) => d.classList.toggle("on", k === i));
+  }, true);
   const soon = () => `<div class="gcard soon"><span class="gcard-img"><span class="soon-lbl">Coming soon</span></span></div>`;
   const FILL = Array(6).fill("");
   const galHome = $("#gallery-home");

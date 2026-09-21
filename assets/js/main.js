@@ -206,24 +206,22 @@
   }
 
   /* ---------- News ---------- */
-  const news = window.EPIC_NEWS || [];
+  // newest first; numbers count up from the oldest item
+  const news = (window.EPIC_NEWS || []).slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
   const newsTotal = news.length;
-  const TYPE_KR = { Notice: "공지", Recruiting: "모집", Grant: "과제", Publication: "논문", Seminar: "세미나", Award: "수상", Event: "행사", Talk: "발표" };
+  const TYPE_LABEL = { Hosted: "Hosted Seminar", Invited: "Invited Talk", Member: "New Member", Press: "Press" };
   const chev = `<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
   const newsRow = (n, i) => {
-    const hasDetail = !!(n.text || n.link || n.img);
+    const hasDetail = !!(n.text || n.link);
     const ext = n.link && /^https?:/.test(n.link) ? ' target="_blank" rel="noopener"' : "";
     return `
       <li class="news-row reveal${hasDetail ? " expandable" : ""}">
         <div class="idx">${String(newsTotal - i).padStart(2, "0")}</div>
-        <span class="date">${esc(n.date)}</span>
-        <span class="tagcol"><span class="tag ${esc(n.type)}">${esc(TYPE_KR[n.type] || n.type)}</span></span>
+        <div class="nr-meta"><span class="date">${esc(n.date)}</span><span class="tagcol"><span class="tag ${esc(n.type)}">${esc(TYPE_LABEL[n.type] || n.type)}</span></span></div>
         <div class="nr-body">
           <h3>${hasDetail ? `<button type="button" class="nr-toggle" aria-expanded="false"><span>${esc(n.title)}</span>${chev}</button>` : `<span class="nr-title">${esc(n.title)}</span>`}</h3>
           ${hasDetail ? `<div class="nr-detail"><div class="nr-detail-in">
-            ${n.text ? `<p>${esc(n.text)}</p>` : ""}
-            ${n.img ? `<a class="nr-img" href="#" data-lightbox="assets/img/${esc(n.img)}" data-caption="${esc(n.title)}"><img src="assets/img/${esc(n.img)}" alt="" loading="lazy"></a>` : ""}
-            ${n.link ? `<a class="nr-link" href="${esc(n.link)}"${ext}>Read more <span aria-hidden="true">→</span></a>` : ""}
+            <div class="nr-text">${n.text ? `<p>${esc(n.text)}</p>` : ""}${n.link ? `<a class="nr-link" href="${esc(n.link)}"${ext}>Read more <span aria-hidden="true">→</span></a>` : ""}</div>
           </div></div>` : ""}
         </div>
       </li>`;
@@ -270,9 +268,26 @@
   const noticeBox = $("#news-list");
   if (noticeBox) {
     bindNewsToggle(noticeBox);
-    paginate(noticeBox, news, 8, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", compact: true });
+    paginate(noticeBox, news, 4, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", compact: true });
   }
 
+
+  /* ---------- Current members ---------- */
+  const people = window.EPIC_MEMBERS || [];
+  const personCard = (m) => `
+    <article class="person-card reveal">
+      <div class="person-photo">${m.photo ? `<img src="assets/img/${esc(m.photo)}" alt="${esc(m.name)}" loading="lazy">` : ""}</div>
+      <div class="person-info">
+        <h3>${esc(m.name)}</h3>
+        <div class="p-line" aria-hidden="true"></div>
+        <dl>
+          <div><dt>Email</dt><dd><a href="mailto:${esc(m.email)}">${esc(m.email)}</a></dd></div>
+          <div><dt>Entered</dt><dd>${esc(m.entered || "")}</dd></div>
+          <div><dt>Topic</dt><dd${m.topic ? "" : ' class="tbd"'}>${esc(m.topic || "To be updated")}</dd></div>
+        </dl>
+      </div>
+    </article>`;
+  $$("[data-people]").forEach((box) => { box.innerHTML = people.map(personCard).join(""); });
 
   /* ---------- Gallery ---------- */
   const gal = window.EPIC_GALLERY || [];
@@ -305,25 +320,16 @@
     track.closest(".gcard").querySelectorAll(".gdots span").forEach((d, k) => d.classList.toggle("on", k === i));
   }, true);
   const soon = () => `<div class="gcard soon"><span class="gcard-img"><span class="soon-lbl">Coming soon</span></span></div>`;
-  const FILL = Array(6).fill("");
+  // first page is padded with "Coming soon" tiles up to `min`
+  const galRender = (min) => (slice, start) => {
+    const items = slice.map(galItem);
+    const pad = start === 0 ? Math.max(0, min - items.length) : 0;
+    return items.concat(Array.from({ length: pad }, soon)).join("");
+  };
   const galHome = $("#gallery-home");
-  if (galHome) {
-    const render = (slice, start) => {
-      const items = slice.map(galItem);
-      const fill = start === 0 ? FILL.slice(0, Math.max(0, 6 - items.length)).map(soon) : [];
-      return items.concat(fill).join("");
-    };
-    paginate(galHome, gal, 6, render, { label: "Gallery pages", compact: true });
-  }
+  if (galHome) paginate(galHome, gal, 2, galRender(2), { label: "Gallery pages", compact: true });
   const galAll = $("#gallery-all");
-  if (galAll) {
-    const render = (slice, start) => {
-      const items = slice.map(galItem);
-      const fill = start === 0 ? FILL.slice(0, Math.max(0, 6 - items.length)).map(soon) : [];
-      return items.concat(fill).join("");
-    };
-    paginate(galAll, gal, 15, render, { label: "Gallery pages", scrollTo: "#gallery-all", param: "page" });
-  }
+  if (galAll) paginate(galAll, gal, 15, galRender(6), { label: "Gallery pages", scrollTo: "#gallery-all", param: "page" });
 
   /* ---------- Tabs (home Members: Professor / Current Members) ---------- */
   const tabBtns = $$(".tab-btn");

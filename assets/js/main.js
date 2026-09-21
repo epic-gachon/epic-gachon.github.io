@@ -426,7 +426,7 @@
       const a = ions[i], b = ions[j]; const dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy; if (d2 < 1 || d2 > 110 * 110) continue; const d = Math.sqrt(d2);
       let f;
       if (a.side === b.side) f = d < 30 ? 0.06 * (1 - d / 30) : 0;                                  // crowd control
-      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.04 * (1 - d / 110) : 0; }   // partners pull together
+      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.033 * (1 - d / 110) : 0; }   // partners pull together
       if (f) { const fx = (dx / d) * f, fy = (dy / d) * f; a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy; }
       if (a.side !== b.side && d < 80) { ctx.strokeStyle = `rgba(${WHITE},${(0.12 * (1 - d / 80)).toFixed(3)})`; ctx.lineWidth = .7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
     }
@@ -440,8 +440,8 @@
     for (const p of ions) {
       p.ph += 0.02 * dt; p.vy += rnd(-0.02, 0.02); p.vy *= 0.97;
       const d = Math.abs(IX - p.x);                              // distance to the band
-      p.vx += -p.side * 0.0008 * dt;                             // field pulling toward the band
-      if (d < 90) { p.vx *= 0.992; p.sol = Math.max(0, p.sol - 0.02 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
+      p.vx += -p.side * 0.00065 * dt;                             // field pulling toward the band
+      if (d < 90) { p.vx *= 0.992; p.sol = Math.max(0, p.sol - 0.016 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
       if (d < 22) { p.wait += dt; p.vx *= 0.9; if (p.side * (IX - p.x) > 0) p.vx += p.side * 0.02; } // hover at the band, do not cross
       if (p.wait > 320) { p.vx = p.side * 0.5; p.wait = -500; }   // gave up waiting: drift back and retry
       p.x += p.vx * dt; p.y += (p.vy + Math.sin(p.ph) * 0.12) * dt;
@@ -462,8 +462,8 @@
     ions = ions.filter((p) => !p.dead);
     /* keep both populations topped up from their own edges */
     const nl = ions.filter((p) => p.side < 0).length, nr = ions.length - nl;
-    if (nl < N && Math.random() < 0.018) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
-    if (nr < N && Math.random() < 0.018) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
+    if (nl < N && Math.random() < 0.015) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
+    if (nr < N && Math.random() < 0.015) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
     raf = requestAnimationFrame(draw);
   };
   const start = () => { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(draw); };

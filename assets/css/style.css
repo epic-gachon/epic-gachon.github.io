@@ -4464,3 +4464,24 @@ html.has-subnav { scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px); 
 @media (max-width: 900px) { .duo { grid-template-columns: 1fr; } }
 /* Research partners: more air between the heading and the logo rows */
 .partner-logos { margin-top: 36px; }
+
+/* ---- v53 ---- */
+/* Research projects: titles medium weight, in line with the news titles */
+.project-list .project h3 { font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+.project-list .project .kr-sub { font-weight: 400; }
+/* MinTech sized up to sit with the other wordmarks */
+.partner-logos .lg-mintech { height: 46px; }
+@media (max-width: 640px) { .partner-logos .lg-mintech { height: 34px; } }
+/* Contact page: one continuous campus-night background from the title band down; tighter gap above "EPIC Lab" */
+.contact-page { position: relative; isolation: isolate; overflow: hidden; background: var(--navy-950); }
+.contact-page::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url(../img/campus.jpg) center 35% / cover no-repeat; }
+.contact-page::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(5, 11, 21, 0.62) 0, rgba(5, 11, 21, 0.78) 45%, rgba(5, 11, 21, 0.9) 100%); }
+.contact-page .page-head { background: transparent; }
+.contact-page .page-head::before, .contact-page .page-head::after { display: none; }
+.contact-page .contact-bg::before, .contact-page .contact-bg::after { display: none; }
+.contact-page .page-head { padding-bottom: 8px; }
+.contact-page .contact.contact-bg { padding-top: 32px; }
+.contact-page .contact.contact-bg { background: transparent; }
+.contact-page .page-head.compact { padding-bottom: 8px; }
+.project-list .project h3 { font-weight: 500; }
+.contact-page { min-height: calc(100vh - 82px); }

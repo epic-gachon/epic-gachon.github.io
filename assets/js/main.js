@@ -259,31 +259,40 @@
     const btn = li.querySelector(".nr-toggle");
     if (btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
   });
-  const newsAll = $("#news-all");
-  if (newsAll) {
-    const PER = 8, pages = Math.max(1, Math.ceil(news.length / PER));
-    let pager = $("#news-pager");
-    if (!pager) { pager = document.createElement("nav"); pager.id = "news-pager"; pager.className = "pager"; pager.setAttribute("aria-label", "News pages"); newsAll.after(pager); }
-    const renderPage = (pg, scroll) => {
+  /* Generic pager: renders items[start..start+per) via render(slice, start) and a ‹ 1 2 3 › bar after the list */
+  const paginate = (list, items, per, render, opts = {}) => {
+    const pages = Math.max(1, Math.ceil(items.length / per));
+    let pager = list.nextElementSibling && list.nextElementSibling.classList.contains("pager") ? list.nextElementSibling : null;
+    if (!pager) { pager = document.createElement("nav"); pager.className = "pager" + (opts.compact ? " pager-sm" : ""); pager.setAttribute("aria-label", opts.label || "Pages"); list.after(pager); }
+    const go = (pg, scroll) => {
       pg = Math.min(pages, Math.max(1, pg));
-      const start = (pg - 1) * PER;
-      newsAll.innerHTML = news.slice(start, start + PER).map((n, i) => newsRow(n, start + i)).join("");
-      $$(".reveal", newsAll).forEach((el) => el.classList.add("in"));
-      $$(".news-row.expandable", newsAll).forEach((li) => { li.classList.add("open"); const b = $(".nr-toggle", li); if (b) b.setAttribute("aria-expanded", "true"); });
+      const start = (pg - 1) * per;
+      list.innerHTML = render(items.slice(start, start + per), start);
+      $$(".reveal", list).forEach((el) => el.classList.add("in"));
+      if (opts.after) opts.after(list);
       pager.innerHTML = [
         `<button type="button" class="pg-arrow" data-pg="${pg - 1}" ${pg === 1 ? "disabled" : ""} aria-label="Previous">‹</button>`,
         ...Array.from({ length: pages }, (_, k) => `<button type="button" class="pg-num${k + 1 === pg ? " active" : ""}" data-pg="${k + 1}" ${k + 1 === pg ? 'aria-current="page"' : ""}>${k + 1}</button>`),
         `<button type="button" class="pg-arrow" data-pg="${pg + 1}" ${pg === pages ? "disabled" : ""} aria-label="Next">›</button>`
       ].join("");
-      if (scroll) { const top = $("#news") || newsAll; top.scrollIntoView({ behavior: "smooth", block: "start" }); }
-      if (pages > 1) history.replaceState(null, "", pg === 1 ? location.pathname : `${location.pathname}?page=${pg}`);
+      if (scroll && opts.scrollTo) { const t = $(opts.scrollTo) || list; t.scrollIntoView({ behavior: "smooth", block: "start" }); }
+      if (opts.param) { const u = new URL(location.href); if (pg === 1) u.searchParams.delete(opts.param); else u.searchParams.set(opts.param, pg); history.replaceState(null, "", u.pathname + u.search + u.hash); }
     };
-    pager.addEventListener("click", (e) => { const b = e.target.closest("button[data-pg]"); if (b && !b.disabled) renderPage(+b.dataset.pg, true); });
+    pager.addEventListener("click", (e) => { const b = e.target.closest("button[data-pg]"); if (b && !b.disabled) go(+b.dataset.pg, !!opts.scrollTo); });
+    go(opts.param ? +(new URLSearchParams(location.search).get(opts.param) || 1) : 1, false);
+  };
+
+  const openAll = (list) => $$(".news-row.expandable", list).forEach((li) => { li.classList.add("open"); const b = $(".nr-toggle", li); if (b) b.setAttribute("aria-expanded", "true"); });
+  const newsAll = $("#news-all");
+  if (newsAll) {
     bindNewsToggle(newsAll);
-    renderPage(+(new URLSearchParams(location.search).get("page") || 1), false);
+    paginate(newsAll, news, 8, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", scrollTo: "#news", param: "page", after: openAll });
   }
   const noticeBox = $("#news-list");
-  if (noticeBox) { noticeBox.innerHTML = news.slice(0, 5).map(newsRow).join(""); bindNewsToggle(noticeBox); }
+  if (noticeBox) {
+    bindNewsToggle(noticeBox);
+    paginate(noticeBox, news, 5, (slice, start) => slice.map((n, i) => newsRow(n, start + i)).join(""), { label: "News pages", compact: true });
+  }
 
 
   /* ---------- Gallery ---------- */
@@ -295,17 +304,24 @@
       ${g.date ? `<span class="gcard-date">${esc(g.date)}</span>` : ""}
     </a>`;
   const soon = (label) => `<div class="gcard soon"><span class="gcard-img"><span class="soon-lbl">Coming soon</span></span><span class="gcard-title">${label}</span></div>`;
+  const FILL = ["Lab photos", "Group meetings", "Conferences", "Lab life", "Campus", "Workshops"];
   const galHome = $("#gallery-home");
   if (galHome) {
-    const items = gal.slice(0, 4).map(galItem);
-    const fill = ["Lab photos", "Group meetings", "Conferences"].slice(0, Math.max(0, 4 - items.length)).map(soon);
-    galHome.innerHTML = items.concat(fill).join("");
+    const render = (slice, start) => {
+      const items = slice.map(galItem);
+      const fill = start === 0 ? FILL.slice(0, Math.max(0, 4 - items.length)).map(soon) : [];
+      return items.concat(fill).join("");
+    };
+    paginate(galHome, gal, 4, render, { label: "Gallery pages", compact: true });
   }
   const galAll = $("#gallery-all");
   if (galAll) {
-    const items = gal.map(galItem);
-    const fill = ["Lab photos", "Group meetings", "Conferences", "Lab life"].slice(0, Math.max(0, 6 - items.length)).map(soon);
-    galAll.innerHTML = items.concat(fill).join("");
+    const render = (slice, start) => {
+      const items = slice.map(galItem);
+      const fill = start === 0 ? FILL.slice(0, Math.max(0, 6 - items.length)).map(soon) : [];
+      return items.concat(fill).join("");
+    };
+    paginate(galAll, gal, 15, render, { label: "Gallery pages", scrollTo: "#gallery-all", param: "page" });
   }
 
   /* ---------- Tabs (members page) ---------- */

@@ -4159,10 +4159,11 @@ html.js.page-out body {
 .partner-logos img { display: block; width: auto; object-fit: contain; transition: transform .3s var(--ease); }
 .partner-logos .lg-mark { height: 64px; }
 .partner-logos .lg-word { height: 34px; }
-.partner-logos .lg-keri { height: 40px; }
+.partner-logos .lg-keri { height: 32px; }
+.partner-logos .lg-snu { height: 80px; }
 .partner-logos .lg-keti { height: 54px; }
 .partner-logos .lg-mintech { height: 38px; }
-@media (max-width: 640px) { .partner-logos { gap: 22px 28px; } .partner-logos .row-break { display: none; } .partner-logos .lg-mark { height: 50px; } .partner-logos .lg-word { height: 26px; } .partner-logos .lg-keri { height: 30px; } .partner-logos .lg-keti { height: 42px; } .partner-logos .lg-mintech { height: 28px; } }
+@media (max-width: 640px) { .partner-logos { gap: 22px 28px; } .partner-logos .row-break { display: none; } .partner-logos .lg-mark { height: 50px; } .partner-logos .lg-word { height: 26px; } .partner-logos .lg-keri { height: 24px; } .partner-logos .lg-snu { height: 62px; } .partner-logos .lg-keti { height: 42px; } .partner-logos .lg-mintech { height: 28px; } }
 .news-home .nr-toggle {
   min-width: 0;
   max-width: 100%;
@@ -4451,3 +4452,12 @@ html.js.page-out body {
 #gallery-home .gslides { position: absolute; inset: 0; }
 #gallery-home .gcard-cap { flex: none; }
 .duo-col .pager { margin-top: auto; padding-top: 20px; }
+
+/* ---- v50 ---- */
+/* Sub-navigation pills no longer stick; the page just scrolls */
+.subnav { position: static; top: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 0; }
+html.has-subnav { scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px); }
+.has-subnav .section[id] { scroll-margin-top: calc(var(--top-h) + var(--nav-h) + 12px); }
+/* Home: Gallery column a little wider (still narrower than News) */
+.duo { grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr); }
+@media (max-width: 900px) { .duo { grid-template-columns: 1fr; } }

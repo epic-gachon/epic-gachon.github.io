@@ -17,7 +17,7 @@ window.EPIC_NEWS = [
   {
     date: "2026.08.25", type: "Invited",
     title: "한국전기연구원(KERI) 초청 세미나",
-    text: "한국전기연구원 최정희 센터장님의 초청으로 “Characterizing Electrochemical Interfaces across Chemistry and Mechanics”로 세미나를 진행하였습니다. 감사합니다! 🙏"
+    text: "한국전기연구원 최정희 센터장님의 초청으로 “Characterizing Electrochemical Interfaces across Chemistry and Mechanics”를 주제로 세미나를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
   },
   {
     date: "2026.08.25", type: "Grant",
@@ -27,17 +27,17 @@ window.EPIC_NEWS = [
   {
     date: "2026.05.29", type: "Hosted",
     title: "인하대학교 화학과 김민규 교수님 초청 세미나",
-    text: "인하대학교 화학과 김민규 교수님을 초청하여 “Understanding Reaction Dynamics of Composite Electrode for Developing High Performance LIBs”로 세미나를 개최하였습니다. 감사합니다! 👏"
+    text: "인하대학교 화학과 김민규 교수님을 초청하여 “Understanding Reaction Dynamics of Composite Electrode for Developing High Performance LIBs”를 주제로 세미나를 개최하였습니다. 방문해주셔서 감사합니다! 👏"
   },
   {
     date: "2026.05.13", type: "Hosted",
     title: "고려대학교 신소재공학과 박혁준 교수님 초청 세미나",
-    text: "고려대학교 신소재공학과 박혁준 교수님을 초청하여 “Calcination Process Design of Layered Oxide Cathodes for Advanced Lithium Ion Batteries”로 세미나를 개최하였습니다. 감사합니다! 👏"
+    text: "고려대학교 신소재공학과 박혁준 교수님을 초청하여 “Calcination Process Design of Layered Oxide Cathodes for Advanced Lithium Ion Batteries”를 주제로 세미나를 개최하였습니다. 방문해주셔서 감사합니다! 👏"
   },
   {
     date: "2026.04.13", type: "Invited",
     title: "포항공과대학교(POSTECH) 초청 세미나",
-    text: "포항공과대학교 기계공학과 안지환 교수님의 초청으로 “Engineering Electrochemical Interfaces: Bridging Electrolyte Chemistry, Mechanics, and Atomic Layer Deposition”로 세미나를 진행하였습니다. 감사합니다! 🙏"
+    text: "포항공과대학교 기계공학과 안지환 교수님의 초청으로 “Engineering Electrochemical Interfaces: Bridging Electrolyte Chemistry, Mechanics, and Atomic Layer Deposition”를 주제로 세미나를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
   },
   {
     date: "2026.03.03", type: "Notice",
@@ -47,6 +47,6 @@ window.EPIC_NEWS = [
   {
     date: "2026.02.06", type: "Invited",
     title: "한국기초과학지원연구원(KBSI) 초청 세미나",
-    text: "한국기초과학지원연구원 수도권센터 이영주 박사님의 초청으로 “Interfacial Control as a Design Strategy for Next-Generation Batteries”로 세미나를 진행하였습니다. 감사합니다! 🙏"
+    text: "한국기초과학지원연구원 수도권센터 이영주 박사님의 초청으로 “Interfacial Control as a Design Strategy for Next-Generation Batteries”를 주제로 세미나를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
   }
 ];

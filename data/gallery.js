@@ -1,10 +1,10 @@
 /* =====================================================================
    EPIC Lab — Gallery data
    사진을 assets/img/gallery/ 에 넣고 배열 맨 위에 항목을 추가하세요.
-   src  : assets/img/ 기준 상대 경로
-   date  : "YYYY.MM.DD"  (사진 아래에 날짜 · 제목 순으로 표시)
-   title : 제목
+   date   : "YYYY.MM" 또는 "YYYY.MM.DD"  → 사진 아래 "JULY 2026" 형식으로 표시
+   title  : 짧은 행사명 (예: "2025 MRS Boston", "First lab dinner")
+   photos : 한 테마의 사진들 (2장 이상이면 옆으로 넘겨 보기)
    ===================================================================== */
 window.EPIC_GALLERY = [
-  // 예시: { src: "gallery/2026-09-21-workshop.jpg", date: "2026.09.21", title: "연구실 워크숍" }
+  // 예시: { date: "2026.07", title: "Syensqo lab tour", photos: ["gallery/2026-07-tour-1.jpg", "gallery/2026-07-tour-2.jpg"] }
 ];

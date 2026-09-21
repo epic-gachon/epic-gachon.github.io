@@ -4163,6 +4163,7 @@ html.js.page-out body {
 .partner-logos .lg-snu { height: 80px; }
 .partner-logos .lg-keti { height: 54px; }
 .partner-logos .lg-mintech { height: 38px; }
+.partner-logos .lg-hyundai { height: 30px; }
 @media (max-width: 640px) { .partner-logos { gap: 22px 28px; } .partner-logos .row-break { display: none; } .partner-logos .lg-mark { height: 50px; } .partner-logos .lg-word { height: 26px; } .partner-logos .lg-keri { height: 24px; } .partner-logos .lg-snu { height: 62px; } .partner-logos .lg-keti { height: 42px; } .partner-logos .lg-mintech { height: 28px; } }
 .news-home .nr-toggle {
   min-width: 0;

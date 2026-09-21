@@ -282,7 +282,7 @@
         <div class="p-line" aria-hidden="true"></div>
         <dl>
           <div><dt>Email</dt><dd><a href="mailto:${esc(m.email)}">${esc(m.email)}</a></dd></div>
-          <div><dt>Entered</dt><dd>${esc(m.entered || "")}</dd></div>
+          <div><dt>Entered year</dt><dd>${esc(m.entered || "")}</dd></div>
           <div><dt>Topic</dt><dd${m.topic ? "" : ' class="tbd"'}>${esc(m.topic || "To be updated")}</dd></div>
         </dl>
       </div>
@@ -292,7 +292,7 @@
   /* ---------- Gallery ---------- */
   const gal = window.EPIC_GALLERY || [];
   const MONTHS = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"];
-  const galDate = (d) => { const m = /^(\d{4})\.(\d{1,2})/.exec(d || ""); return m ? `${MONTHS[+m[2] - 1]} ${m[1]}` : esc(d || ""); };
+  const galDate = (d) => { const m = /^(\d{4})\.(\d{1,2})(?:\.(\d{1,2}))?/.exec(d || ""); return m ? `${MONTHS[+m[2] - 1]}${m[3] ? " " + +m[3] + "," : ""} ${m[1]}` : esc(d || ""); };
   const galItem = (g) => {
     const photos = g.photos || (g.src ? [g.src] : []);
     const title = esc(g.title || g.cap || "");

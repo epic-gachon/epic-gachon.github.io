@@ -94,24 +94,6 @@
     document.addEventListener("click", (e) => { if (!li.contains(e.target)) { li.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
   });
 
-  /* ---------- Scroll-spy (home only) ---------- */
-  const spyLinks = $$('.nav-links > li > a[href^="#"]');
-  const sections = spyLinks.map((a) => $(a.getAttribute("href"))).filter(Boolean);
-  if (sections.length) {
-    const setActive = (id) => spyLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
-    const pick = () => {
-      const line = (window.innerHeight * 0.35);
-      let current = null;
-      for (const s of sections) { if (s.getBoundingClientRect().top <= line) current = s.id; }
-      // at the very bottom, the last section wins
-      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) current = sections[sections.length - 1].id;
-      setActive(current);
-    };
-    window.addEventListener("scroll", pick, { passive: true });
-    window.addEventListener("resize", pick);
-    pick();
-  }
-
   /* ---------- Reveal on scroll ---------- */
   const reveals = $$(".reveal");
   if ("IntersectionObserver" in window && reveals.length) {
@@ -225,21 +207,6 @@
 
   /* ---------- News ---------- */
   const news = window.EPIC_NEWS || [];
-  const newsCard = (n, extra = "") => `
-    <article class="news-card reveal ${extra}">
-      <div class="media${n.img ? "" : " noimg"}">
-        ${n.img ? `<img src="assets/img/${n.img}" alt="" loading="lazy"${n.img.startsWith("pubs/") ? ' class="contain"' : ""}>` : `<span class="big"><small>${esc(n.type)}</small>${esc(n.date)}</span>`}
-        ${n.img ? `<span class="tag ${esc(n.type)}">${esc(n.type)}</span>` : ""}
-      </div>
-      <div class="body">
-        <span class="date">${esc(n.date)}</span>
-        <h4>${n.link ? `<a href="${esc(n.link)}" ${/^https?:/.test(n.link) ? 'target="_blank" rel="noopener"' : ""}>${esc(n.title)}</a>` : esc(n.title)}</h4>
-        <p>${esc(n.text)}</p>
-        ${n.link ? `<span class="more">Read more <span aria-hidden="true">→</span></span>` : ""}
-      </div>
-    </article>`;
-  const newsHome = $("#news-home");
-  if (newsHome) newsHome.innerHTML = news.slice(0, 3).map((n) => newsCard(n)).join("");
   const newsTotal = news.length;
   const TYPE_KR = { Notice: "공지", Recruiting: "모집", Grant: "과제", Publication: "논문", Seminar: "세미나", Award: "수상", Event: "행사", Talk: "발표" };
   const chev = `<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
@@ -335,13 +302,12 @@
     paginate(galAll, gal, 15, render, { label: "Gallery pages", scrollTo: "#gallery-all", param: "page" });
   }
 
-  /* ---------- Tabs (members page) ---------- */
+  /* ---------- Tabs (home Members: Professor / Current Members) ---------- */
   const tabBtns = $$(".tab-btn");
   if (tabBtns.length) {
     const show = (id, push) => {
       tabBtns.forEach((b) => { const on = b.dataset.tab === id; b.classList.toggle("active", on); b.setAttribute("aria-selected", String(on)); });
       $$(".tab-panel").forEach((p) => p.classList.toggle("active", p.id === id));
-      $$('.nav-links .sub a').forEach((a) => a.classList.toggle("active", a.getAttribute("href").endsWith("#" + id)));
       if (push) history.replaceState(null, "", "#" + id);
     };
     tabBtns.forEach((b) => b.addEventListener("click", () => show(b.dataset.tab, true)));
@@ -460,7 +426,7 @@
       const a = ions[i], b = ions[j]; const dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy; if (d2 < 1 || d2 > 110 * 110) continue; const d = Math.sqrt(d2);
       let f;
       if (a.side === b.side) f = d < 30 ? 0.06 * (1 - d / 30) : 0;                                  // crowd control
-      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.05 * (1 - d / 110) : 0; }   // partners pull together
+      else { const nearBand = Math.abs(a.x - IX) < 90 && Math.abs(b.x - IX) < 90; f = nearBand ? -0.04 * (1 - d / 110) : 0; }   // partners pull together
       if (f) { const fx = (dx / d) * f, fy = (dy / d) * f; a.vx -= fx; a.vy -= fy; b.vx += fx; b.vy += fy; }
       if (a.side !== b.side && d < 80) { ctx.strokeStyle = `rgba(${WHITE},${(0.12 * (1 - d / 80)).toFixed(3)})`; ctx.lineWidth = .7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
     }
@@ -474,8 +440,8 @@
     for (const p of ions) {
       p.ph += 0.02 * dt; p.vy += rnd(-0.02, 0.02); p.vy *= 0.97;
       const d = Math.abs(IX - p.x);                              // distance to the band
-      p.vx += -p.side * 0.001 * dt;                             // field pulling toward the band
-      if (d < 90) { p.vx *= 0.992; p.sol = Math.max(0, p.sol - 0.025 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
+      p.vx += -p.side * 0.0008 * dt;                             // field pulling toward the band
+      if (d < 90) { p.vx *= 0.992; p.sol = Math.max(0, p.sol - 0.02 * dt); } else p.sol = Math.min(1, p.sol + 0.01 * dt);
       if (d < 22) { p.wait += dt; p.vx *= 0.9; if (p.side * (IX - p.x) > 0) p.vx += p.side * 0.02; } // hover at the band, do not cross
       if (p.wait > 320) { p.vx = p.side * 0.5; p.wait = -500; }   // gave up waiting: drift back and retry
       p.x += p.vx * dt; p.y += (p.vy + Math.sin(p.ph) * 0.12) * dt;
@@ -496,8 +462,8 @@
     ions = ions.filter((p) => !p.dead);
     /* keep both populations topped up from their own edges */
     const nl = ions.filter((p) => p.side < 0).length, nr = ions.length - nl;
-    if (nl < N && Math.random() < 0.022) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
-    if (nr < N && Math.random() < 0.022) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
+    if (nl < N && Math.random() < 0.018) ions.push(makeIon(-1, Math.random() < 0.5 ? rnd(-30, -10) : rnd(IX - 320, IX - 160)));
+    if (nr < N && Math.random() < 0.018) ions.push(makeIon(1, Math.random() < 0.5 ? rnd(W + 10, W + 30) : rnd(IX + 160, IX + 320)));
     raf = requestAnimationFrame(draw);
   };
   const start = () => { if (running) return; running = true; last = performance.now(); raf = requestAnimationFrame(draw); };

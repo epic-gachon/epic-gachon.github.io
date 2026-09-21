@@ -1,6 +1,7 @@
 /* =====================================================================
    EPIC Lab — News data
    날짜순으로 자동 정렬·번호 매김 (가장 최근이 위, 번호는 오래된 순 01부터).
+   같은 날짜가 여러 건이면 이 파일에서 위에 적힌 항목이 더 최근(큰 번호)으로 표시됩니다.
    date : "YYYY.MM.DD"
    type : "Member"(새 구성원) | "Publication"(논문) | "Press"(학과 뉴스·기사) |
           "Hosted"(Hosted Seminar) | "Invited"(Invited Talk) |
@@ -15,14 +16,14 @@ window.EPIC_NEWS = [
     link: "index.html#join"
   },
   {
-    date: "2026.08.25", type: "Invited",
-    title: "한국전기연구원(KERI) 초청 세미나",
-    text: "한국전기연구원 최정희 센터장님의 초청으로 “Characterizing Electrochemical Interfaces across Chemistry and Mechanics”를 주제로 세미나를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
-  },
-  {
     date: "2026.08.25", type: "Grant",
     title: "한국연구재단 우수연구-핵심연구(기본연구B) 선정",
     text: "한국연구재단 우수연구-핵심연구(기본연구B) 과제에 선정되었습니다 (2026.09 – 2029.08)."
+  },
+  {
+    date: "2026.08.25", type: "Invited",
+    title: "한국전기연구원(KERI) 초청 세미나",
+    text: "한국전기연구원 최정희 센터장님의 초청으로 “Characterizing Electrochemical Interfaces across Chemistry and Mechanics”를 주제로 세미나를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
   },
   {
     date: "2026.05.29", type: "Hosted",

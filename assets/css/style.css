@@ -707,7 +707,10 @@ html.js.page-in body {
   font-weight: 700;
   margin-top: 6px;
 }
-.member-card p,
+.member-card p {
+  color: var(--muted);
+  font-size: 13px;
+}
 .pi-body .dept,
 .pi-contact a {
   color: var(--muted);
@@ -762,9 +765,6 @@ html.js.page-in body {
 .map iframe,
 .pi-block li .what strong {
   display: block;
-}
-.member-card p {
-  font-size: 13px;
 }
 .pi-block li .what span {
   color: var(--muted);
@@ -1603,7 +1603,6 @@ html.js.page-in body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(28px, 4vw, 56px);
-  align-items: start;
 }
 .duo-head {
   display: flex;
@@ -2131,18 +2130,15 @@ main + .contact {
 .join-light .apply-card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(28px, 3.5vw, 44px);
 }
 .join-light .apply-card h3 {
   font-size: 26px;
 }
 .join-light .apply-line {
   font-size: 17px;
-  margin-top: 22px;
 }
+.apply-extra,
 .join-light .apply-btns {
-  margin-top: 22px;
   flex-direction: column;
 }
 .join-light .apply-btns .btn {
@@ -2150,20 +2146,15 @@ main + .contact {
   width: 100%;
 }
 .join-light .apply-note {
-  margin-top: 18px;
   font-size: 13px;
   text-align: center;
 }
 .apply-extra {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   font-size: 13.5px;
   color: var(--muted);
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  margin: 22px 0 0;
-  padding-top: 18px;
   border-top: 1px solid var(--line);
 }
 .apply-extra dt,
@@ -2236,9 +2227,6 @@ main + .contact {
     rgba(5, 11, 21, 0.8) 60%,
     rgba(5, 11, 21, 0.92) 100%
   );
-}
-.contact-bg .map {
-  margin-left: auto;
 }
 .contact-grid {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -2597,9 +2585,6 @@ main + .contact {
   width: 16px;
   height: 16px;
 }
-.duo {
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-}
 @media (max-width: 900px) {
   .duo {
     grid-template-columns: 1fr;
@@ -2691,10 +2676,7 @@ main + .contact {
   box-shadow: 0 8px 20px rgba(7, 17, 32, 0.18);
 }
 html.has-subnav {
-  scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 78px);
-}
-.has-subnav .section[id] {
-  scroll-margin-top: calc(var(--top-h) + var(--nav-h) + 70px);
+  scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px);
 }
 .apply-card,
 .empty-state,
@@ -3799,9 +3781,6 @@ html.js.page-out body {
   transform: translateY(-8px) scale(0.98);
   transform-origin: 90%0;
   pointer-events: none;
-  transition:
-    opacity 0.22s var(--ease),
-    transform 0.28s var(--ease);
 }
 .apply-menu::after {
   content: "";
@@ -3867,15 +3846,7 @@ html.js.page-out body {
   min-height: 160px;
 }
 .contact-bg .contact-grid {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(32px, 4vw, 64px);
-  align-items: center;
-}
-.contact-bg .map,
-.contact-bg .map iframe {
-  min-height: 400px;
-  height: 400px;
-  max-width: none;
 }
 .contact-name {
   color: #fff;
@@ -3886,6 +3857,8 @@ html.js.page-out body {
   font-size: 13.5px;
   color: rgba(255, 255, 255, 0.6);
 }
+.contact-bg .map,
+.contact-bg .map iframe,
 .contact-list {
   max-width: none;
 }
@@ -3970,6 +3943,7 @@ html.js.page-out body {
 .news-full .nr-link {
   font-size: 12px;
 }
+#gallery-home .gcard-cap .gcard-date,
 .news-full .news-row .tagcol .tag {
   font-size: 10.5px;
 }
@@ -3994,7 +3968,10 @@ html.js.page-out body {
   font-size: 12.5px;
 }
 .project-list .project h3 {
-  font-size: 16.5px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
 }
 .project-list .project .kr-sub {
   font-size: 13px;
@@ -4152,19 +4129,69 @@ html.js.page-out body {
 .news-row .tagcol .tag {
   white-space: nowrap;
 }
-/* Research partners (News page): logos only, two centred rows; SNU and ANL sit in the middle of the first row.
-   Rule: emblems (.lg-mark) share one height, wordmarks (.lg-word) a smaller one so visual weight matches; per-logo tweaks via lg-* classes. */
-.partner-logos { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 48px; }
-.partner-logos .row-break { flex-basis: 100%; height: 0; }
-.partner-logos img { display: block; width: auto; object-fit: contain; transition: transform .3s var(--ease); }
-.partner-logos .lg-mark { height: 64px; }
-.partner-logos .lg-word { height: 34px; }
-.partner-logos .lg-keri { height: 32px; }
-.partner-logos .lg-snu { height: 80px; }
-.partner-logos .lg-keti { height: 54px; }
-.partner-logos .lg-mintech { height: 38px; }
-.partner-logos .lg-hyundai { height: 30px; }
-@media (max-width: 640px) { .partner-logos { gap: 22px 28px; } .partner-logos .row-break { display: none; } .partner-logos .lg-mark { height: 50px; } .partner-logos .lg-word { height: 26px; } .partner-logos .lg-keri { height: 24px; } .partner-logos .lg-snu { height: 62px; } .partner-logos .lg-keti { height: 42px; } .partner-logos .lg-mintech { height: 28px; } }
+.partner-logos {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 48px;
+}
+.partner-logos .row-break {
+  flex-basis: 100%;
+  height: 0;
+}
+.partner-logos img {
+  display: block;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s var(--ease);
+}
+.partner-logos .lg-mark {
+  height: 64px;
+}
+.partner-logos .lg-word {
+  height: 34px;
+}
+.partner-logos .lg-keri {
+  height: 32px;
+}
+.partner-logos .lg-snu {
+  height: 80px;
+}
+.partner-logos .lg-keti {
+  height: 54px;
+}
+.partner-logos .lg-hyundai {
+  height: 30px;
+}
+@media (max-width: 640px) {
+  .partner-logos {
+    gap: 22px 28px;
+  }
+  .partner-logos .row-break {
+    display: none;
+  }
+  .partner-logos .lg-mark {
+    height: 50px;
+  }
+  .partner-logos .lg-word {
+    height: 26px;
+  }
+  .partner-logos .lg-keri {
+    height: 24px;
+  }
+  .partner-logos .lg-snu {
+    height: 62px;
+  }
+  .partner-logos .lg-keti {
+    height: 42px;
+  }
+  .partner-logos .lg-mintech {
+    height: 28px;
+  }
+}
 .news-home .nr-toggle {
   min-width: 0;
   max-width: 100%;
@@ -4241,9 +4268,6 @@ html.js.page-out body {
 }
 #gallery-home .gcard-cap {
   padding: 10px 14px 13px;
-}
-#gallery-home .gcard-cap .gcard-date {
-  font-size: 10.5px;
 }
 #gallery-home .gcard-cap .gcard-title {
   font-size: 13.5px;
@@ -4426,56 +4450,188 @@ html.js.page-out body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-/* ---- v49 ---- */
-/* Apply card: tighter vertical rhythm, subtitle matches the KR line under "Email or online application form" */
-.join-light .apply-card { padding: clamp(24px, 3vw, 32px) clamp(24px, 3.2vw, 40px); justify-content: center; }
-.apply-card .apply-sub { display: block; margin-top: 4px; font-size: 14px; font-weight: 500; color: var(--muted); }
-.join-light .apply-line { margin-top: 16px; }
-.join-light .apply-note { margin-top: 14px; }
-.join-light .apply-btns { margin-top: 16px; gap: 10px; }
-.join-light .apply-btns .btn { padding-top: 15px; padding-bottom: 15px; }
-.apply-extra { margin-top: 16px; padding-top: 16px; grid-template-columns: 1fr; }
-
-/* Contact page: single heading band; map stretches to the text column */
-.contact-bg .contact-grid > .reveal { display: flex; flex-direction: column; justify-content: center; }
-
-/* Home: Gallery column stretches to the News column; cards fill the height, pagers align */
-.duo { align-items: stretch; }
-.duo-col { display: flex; flex-direction: column; }
-.duo-col > .news-full { flex: 1; }
-#gallery-home.duo-gallery { flex: 1; grid-auto-rows: 1fr; align-items: stretch; }
-#gallery-home .gcard { display: flex; flex-direction: column; height: 100%; }
-#gallery-home .gcard .gcard-img { position: relative; flex: 1; aspect-ratio: auto; min-height: 200px; }
-#gallery-home .gslides { position: absolute; inset: 0; }
-#gallery-home .gcard-cap { flex: none; }
-.duo-col .pager { margin-top: auto; padding-top: 20px; }
-
-/* ---- v50 ---- */
-/* Sub-navigation pills no longer stick; the page just scrolls */
-.subnav { position: static; top: auto; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 0; }
-html.has-subnav { scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px); }
-.has-subnav .section[id] { scroll-margin-top: calc(var(--top-h) + var(--nav-h) + 12px); }
-/* Home: Gallery column a little wider (still narrower than News) */
-.duo { grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr); }
-@media (max-width: 900px) { .duo { grid-template-columns: 1fr; } }
-/* Research partners: more air between the heading and the logo rows */
-.partner-logos { margin-top: 36px; }
-
-/* ---- v53 ---- */
-/* Research projects: titles medium weight, in line with the news titles */
-.project-list .project h3 { font-family: var(--font-body); font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
-.project-list .project .kr-sub { font-weight: 400; }
-/* MinTech sized up to sit with the other wordmarks */
-.partner-logos .lg-mintech { height: 46px; }
-@media (max-width: 640px) { .partner-logos .lg-mintech { height: 34px; } }
-.project-list .project h3 { font-weight: 500; }
-
-/* ---- v54 ---- */
-/* Contact page = the home Contact section on its own (no title band); clears the fixed header and fills the screen */
-.contact-page .contact.contact-bg { padding-top: calc(var(--top-h) + var(--nav-h) + clamp(48px, 6vw, 80px)); min-height: calc(100vh - 82px); }
-/* Contact map: wider, landscape-leaning box on both pages */
-.contact-bg .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
-.contact-bg .map { width: 100%; margin-left: 0; }
-.contact-bg .map, .contact-bg .map iframe { height: 440px; min-height: 0; }
-@media (max-width: 900px) { .contact-bg .contact-grid { grid-template-columns: 1fr; } .contact-bg .map, .contact-bg .map iframe { height: 300px; } }
+.join-light .apply-card {
+  padding: clamp(24px, 3vw, 32px) clamp(24px, 3.2vw, 40px);
+  justify-content: center;
+}
+.apply-card .apply-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.join-light .apply-line {
+  margin-top: 16px;
+}
+.join-light .apply-note {
+  margin-top: 14px;
+}
+.join-light .apply-btns {
+  margin-top: 16px;
+  gap: 10px;
+}
+.join-light .apply-btns .btn {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.apply-extra {
+  margin: 16px 0 0;
+  padding-top: 16px;
+  grid-template-columns: 1fr;
+}
+.contact-bg .contact-grid > .reveal {
+  justify-content: center;
+}
+.duo {
+  align-items: stretch;
+}
+.contact-bg .contact-grid > .reveal,
+.duo-col {
+  display: flex;
+  flex-direction: column;
+}
+.duo-col > .news-full {
+  flex: 1;
+}
+#gallery-home.duo-gallery {
+  flex: 1;
+  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+#gallery-home .gcard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#gallery-home .gcard .gcard-img {
+  position: relative;
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 200px;
+}
+#gallery-home .gslides {
+  position: absolute;
+  inset: 0;
+}
+#gallery-home .gcard-cap {
+  flex: none;
+}
+.duo-col .pager {
+  margin-top: auto;
+  padding-top: 20px;
+}
+.subnav {
+  position: static;
+  top: auto;
+  background: 0 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 0;
+}
+.has-subnav .section[id] {
+  scroll-margin-top: calc(var(--top-h) + var(--nav-h) + 12px);
+}
+.duo {
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+}
+@media (max-width: 900px) {
+  .duo {
+    grid-template-columns: 1fr;
+  }
+}
+.partner-logos {
+  margin: 36px 0 0;
+}
+.project-list .project .kr-sub {
+  font-weight: 400;
+}
+.partner-logos .lg-mintech {
+  height: 46px;
+}
+@media (max-width: 640px) {
+  .partner-logos .lg-mintech {
+    height: 34px;
+  }
+}
+.contact-page .contact.contact-bg {
+  padding-top: calc(var(--top-h) + var(--nav-h) + clamp(48px, 6vw, 80px));
+  min-height: calc(100vh - 82px);
+}
+.contact-bg .contact-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+}
+.contact-bg .map {
+  width: 100%;
+  margin-left: 0;
+}
+.contact-bg .map,
+.contact-bg .map iframe {
+  height: 440px;
+  min-height: 0;
+}
+@media (max-width: 900px) {
+  .contact-bg .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-bg .map,
+  .contact-bg .map iframe {
+    height: 300px;
+  }
+}
+@media (max-width: 760px) {
+  .nav-links {
+    visibility: hidden;
+    transition:
+      transform 0.35s var(--ease),
+      opacity 0.3s,
+      visibility 0s linear 0.35s;
+  }
+  .nav-links.open {
+    visibility: visible;
+    transition:
+      transform 0.35s var(--ease),
+      opacity 0.3s,
+      visibility 0s;
+  }
+  .nav-links .sub {
+    pointer-events: inherit;
+  }
+}
+.subnav-pills {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.apply-menu {
+  transition:
+    opacity 0.22s var(--ease),
+    transform 0.28s var(--ease),
+    visibility 0s linear 0.28s;
+}
+.topbar-apply.open .apply-menu {
+  visibility: visible;
+  transition-delay: 0s;
+}
+.apply-menu,
+.to-top {
+  visibility: hidden;
+}
+.to-top.show {
+  visibility: visible;
+}
+@media (min-width: 761px) {
+  .nav-links .sub {
+    visibility: hidden;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.3s var(--ease),
+      visibility 0s linear 0.3s;
+  }
+  .nav-links .has-sub.open .sub,
+  .nav-links .has-sub:focus-within .sub,
+  .nav-links .has-sub:hover .sub {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}

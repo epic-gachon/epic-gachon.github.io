@@ -4438,10 +4438,7 @@ html.js.page-out body {
 .apply-extra { margin-top: 16px; padding-top: 16px; grid-template-columns: 1fr; }
 
 /* Contact page: single heading band; map stretches to the text column */
-.contact-bg .contact-grid { align-items: stretch; }
-.contact-bg .map, .contact-bg .map iframe { height: 100%; min-height: 380px; }
 .contact-bg .contact-grid > .reveal { display: flex; flex-direction: column; justify-content: center; }
-@media (max-width: 900px) { .contact-bg .map, .contact-bg .map iframe { height: 300px; min-height: 300px; } }
 
 /* Home: Gallery column stretches to the News column; cards fill the height, pagers align */
 .duo { align-items: stretch; }
@@ -4472,16 +4469,13 @@ html.has-subnav { scroll-padding-top: calc(var(--top-h) + var(--nav-h) + 16px); 
 /* MinTech sized up to sit with the other wordmarks */
 .partner-logos .lg-mintech { height: 46px; }
 @media (max-width: 640px) { .partner-logos .lg-mintech { height: 34px; } }
-/* Contact page: one continuous campus-night background from the title band down; tighter gap above "EPIC Lab" */
-.contact-page { position: relative; isolation: isolate; overflow: hidden; background: var(--navy-950); }
-.contact-page::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url(../img/campus.jpg) center 35% / cover no-repeat; }
-.contact-page::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(5, 11, 21, 0.62) 0, rgba(5, 11, 21, 0.78) 45%, rgba(5, 11, 21, 0.9) 100%); }
-.contact-page .page-head { background: transparent; }
-.contact-page .page-head::before, .contact-page .page-head::after { display: none; }
-.contact-page .contact-bg::before, .contact-page .contact-bg::after { display: none; }
-.contact-page .page-head { padding-bottom: 8px; }
-.contact-page .contact.contact-bg { padding-top: 32px; }
-.contact-page .contact.contact-bg { background: transparent; }
-.contact-page .page-head.compact { padding-bottom: 8px; }
 .project-list .project h3 { font-weight: 500; }
-.contact-page { min-height: calc(100vh - 82px); }
+
+/* ---- v54 ---- */
+/* Contact page = the home Contact section on its own (no title band); clears the fixed header and fills the screen */
+.contact-page .contact.contact-bg { padding-top: calc(var(--top-h) + var(--nav-h) + clamp(48px, 6vw, 80px)); min-height: calc(100vh - 82px); }
+/* Contact map: wider, landscape-leaning box on both pages */
+.contact-bg .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+.contact-bg .map { width: 100%; margin-left: 0; }
+.contact-bg .map, .contact-bg .map iframe { height: 440px; min-height: 0; }
+@media (max-width: 900px) { .contact-bg .contact-grid { grid-template-columns: 1fr; } .contact-bg .map, .contact-bg .map iframe { height: 300px; } }

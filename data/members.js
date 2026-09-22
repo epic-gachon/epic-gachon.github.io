@@ -8,6 +8,7 @@
    ===================================================================== */
 window.EPIC_MEMBERS = [
   { name: "Hyunmin Shin", email: "shm041005@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/hyunmin-shin.jpg" },
+  { name: "Jaeyoon Kim", email: "kjy0393a@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/jaeyoon-kim.jpg" },
 ];
 
 /* Alumni — same fields as above; leave empty until there are alumni */

@@ -7,9 +7,9 @@
    topic   : 연구 주제 (비워두면 "To be updated")
    ===================================================================== */
 window.EPIC_MEMBERS = [
-  { name: "Hyunmin Shin", email: "shm041005@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/hyunmin-shin.jpg" },
-  { name: "Jaeyoon Kim", email: "kjy0393a@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/jaeyoon-kim.jpg" },
   { name: "Taehyeon Kim", email: "register0777@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/taehyeon-kim.jpg" },
+  { name: "Jaeyoon Kim", email: "kjy0393a@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/jaeyoon-kim.jpg" },
+  { name: "Hyunmin Shin", email: "shm041005@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/hyunmin-shin.jpg" },
   { name: "Gunwoo Kim", email: "gwstar@gachon.ac.kr", entered: "2026 Fall", topic: "", photo: "members/gunwoo-kim.jpg" },
 ];
 

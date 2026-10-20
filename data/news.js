@@ -10,6 +10,11 @@
    ===================================================================== */
 window.EPIC_NEWS = [
   {
+    date: "2026.10.16", type: "Invited",
+    title: "2026 한국에너지학회 추계학술발표회 초청 발표 (Jeju, KR)",
+    text: "아주대학교 화학공학과 황종국 교수님의 초청으로 2026 한국에너지학회 추계학술발표회 「차세대 이차전지 소재 및 핵심기술」 특별세션(한국에너지기술연구원 제주글로벌연구센터)에서 “Engineering Electrochemical Interfaces: Bridging Electrolyte Chemistry and Mechanics”를 주제로 발표를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
+  },
+  {
     date: "2026.09.01", type: "Recruiting",
     title: "대학원 신입생(석·박사) 및 학부연구생 모집",
     text: "석·박사 대학원생과 학부연구생을 모집합니다. 지원 방법은 홈의 How to apply를 참고하시기 바랍니다.",

@@ -15,7 +15,11 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const PI = "Kyobin Park";
-  const citeOf = (p) => `<i>${esc(p.journal)}</i>, <b>${esc(p.vol)}</b>, ${esc(p.pages)} (${esc(p.year)})`;
+  const citeOf = (p) => p.status
+    ? `<i>${esc(p.journal)}</i>, ${esc(p.status)} (${esc(p.year)})`
+    : `<i>${esc(p.journal)}</i>, <b>${esc(p.vol)}</b>, ${esc(p.pages)} (${esc(p.year)})`;
+  const statusTag = (p) => (p.status ? `<span class="pub-status">${esc(p.status)}</span>` : "");
+  const titleLink = (p) => (p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title));
   const boldPI = (authors) => esc(authors).replace(new RegExp(PI + "[†*]*", "g"), (m) => `<b>${m}</b>`);
 
   /* ---------- Nav: solid on scroll ---------- */
@@ -159,8 +163,8 @@
     <article class="pub-card reveal">
       <div class="thumb">${p.img ? `<img src="assets/img/pubs/${p.img}" alt="" loading="lazy">` : `<span class="nofig">${esc(p.year)}</span>`}</div>
       <div>
-        <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span></div>
-        <h4><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></h4>
+        <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span>${statusTag(p)}</div>
+        <h4>${titleLink(p)}</h4>
         <p class="authors">${boldPI(p.authors)}</p>
         <p class="cite">${citeOf(p)}</p>
       </div>
@@ -181,12 +185,12 @@
         <div class="idx">${String(p.n).padStart(2, "0")}</div>
         <div class="thumb">${p.img ? `<a href="#" data-lightbox="assets/img/pubs/${p.img}" data-caption="${esc(p.journal)} · ${esc(p.year)}"><img src="assets/img/pubs/${p.img}" alt="" loading="lazy"></a>` : `<span class="nofig">${esc(p.year)}</span>`}</div>
         <div>
-          <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span></div>
-          <h3><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a></h3>
+          <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span>${statusTag(p)}</div>
+          <h3>${titleLink(p)}</h3>
           <p class="authors">${boldPI(p.authors)}</p>
           <p class="cite">${citeOf(p)}</p>
           <div class="actions">
-            <a class="link" href="${esc(p.url)}" target="_blank" rel="noopener">${linkIcon} Article</a>
+            ${p.url ? `<a class="link" href="${esc(p.url)}" target="_blank" rel="noopener">${linkIcon} Article</a>` : ""}
           </div>
         </div>
       </article>`;

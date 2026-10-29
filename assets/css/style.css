@@ -4794,3 +4794,15 @@ html.js.page-out body {
   opacity: 1;
   transform: none;
 }
+
+/* Publication status badge (e.g. Accepted) */
+.pub-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #eef8da;
+  color: #4d7c0f;
+}

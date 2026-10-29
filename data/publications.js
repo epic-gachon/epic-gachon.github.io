@@ -4,9 +4,18 @@
    img: assets/img/pubs/ 안의 TOC 이미지 파일명 (없으면 null)
    홈의 Recent Publications 에는 배열 맨 위 4개가 자동 표시됩니다.
    authors: † 공동 제1저자, * 교신저자 표시 그대로 입력
+   status: "Accepted" 등 (게재 전 논문) — vol/pages/url 은 "" 로 두고, 출판되면 status 를 지우고 채우면 됩니다.
    인용 형식(구글사이트와 동일): 저널명, 권, 페이지 (연도) → journal / vol / pages / year 로 나눠 입력
    ===================================================================== */
 window.EPIC_PUBS = [
+  {
+    n: 20, year: 2026, journal: "Advanced Energy Materials", featured: true, status: "Accepted",
+    title: "Engineering Energy-Storage Interfaces with Atomic and Molecular Layer Deposition: From Surface Chemistry to Process Design",
+    authors: "Kyobin Park*, Jeffrey W. Elam*",
+    vol: "", pages: "",
+    url: "",
+    img: "p20.jpg", tags: ["ALD", "MLD", "Interface"]
+  },
   {
     n: 19, year: 2026, journal: "Small Structures", featured: true,
     title: "Probing interfacial reaction pathways in atomic layer deposition on sulfide superionic conductors",

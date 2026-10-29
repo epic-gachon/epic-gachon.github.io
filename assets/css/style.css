@@ -4806,3 +4806,9 @@ html.js.page-out body {
   background: #eef8da;
   color: #4d7c0f;
 }
+
+/* Publication titles: fill the line width instead of balancing into equal halves */
+.pub-card h4,
+.pub-row h3 {
+  text-wrap: pretty;
+}

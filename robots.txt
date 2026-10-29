@@ -1,4 +1,6 @@
 User-agent: *
+# 학생 사진은 검색엔진(구글 이미지 등)에 노출하지 않음
+Disallow: /assets/img/members/
 Allow: /
 
 Sitemap: https://epic.gachon.ac.kr/sitemap.xml

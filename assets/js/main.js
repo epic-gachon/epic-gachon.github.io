@@ -159,15 +159,23 @@
 
   /* ---------- Publications ---------- */
   const pubs = window.EPIC_PUBS || [];
+  // small WebP thumbnail for the list; the full-size figure opens in the lightbox
+  const thumbSrc = (p) => `assets/img/pubs/thumb/${p.img.replace(/\.\w+$/, ".webp")}`;
+  const thumbImg = (p) => `<img src="${thumbSrc(p)}" alt="" width="680" height="480" loading="lazy" decoding="async">`;
+  const pubHead = (p, tag) => `
+      <div class="pub-head-row">
+        <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span>${statusTag(p)}</div>
+        <${tag} class="pub-title">${titleLink(p)}</${tag}>
+      </div>`;
   const pubCard = (p) => `
     <article class="pub-card reveal">
-      <div class="thumb">${p.img ? `<img src="assets/img/pubs/${p.img}" alt="" loading="lazy">` : `<span class="nofig">${esc(p.year)}</span>`}</div>
-      <div>
-        <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span>${statusTag(p)}</div>
-        <h4>${titleLink(p)}</h4>
-        <p class="authors">${boldPI(p.authors)}</p>
-        <p class="cite">${citeOf(p)}</p>
+      <div class="pub-text">${pubHead(p, "h3")}
+        <div class="pub-body">
+          <p class="authors">${boldPI(p.authors)}</p>
+          <p class="cite">${citeOf(p)}</p>
+        </div>
       </div>
+      <div class="thumb">${p.img ? thumbImg(p) : `<span class="nofig">${esc(p.year)}</span>`}</div>
     </article>`;
   const featuredBox = $("#pub-featured");
   if (featuredBox) featuredBox.innerHTML = pubs.filter((p) => p.featured).slice(0, 4).map(pubCard).join("");
@@ -182,37 +190,37 @@
     const linkIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
     const row = (p) => `
       <article class="pub-row" data-pubyear="${p.year}">
-        <div class="idx">${String(p.n).padStart(2, "0")}</div>
-        <div class="thumb">${p.img ? `<a href="#" data-lightbox="assets/img/pubs/${p.img}" data-caption="${esc(p.journal)} · ${esc(p.year)}"><img src="assets/img/pubs/${p.img}" alt="" loading="lazy"></a>` : `<span class="nofig">${esc(p.year)}</span>`}</div>
-        <div>
-          <div class="meta"><span class="journal">${esc(p.journal)}</span><span class="year">${esc(p.year)}</span>${statusTag(p)}</div>
-          <h3>${titleLink(p)}</h3>
-          <p class="authors">${boldPI(p.authors)}</p>
-          <p class="cite">${citeOf(p)}</p>
-          <div class="actions">
-            ${p.url ? `<a class="link" href="${esc(p.url)}" target="_blank" rel="noopener">${linkIcon} Article</a>` : ""}
+        <div class="idx" aria-hidden="true">${String(p.n).padStart(2, "0")}</div>
+        <div class="pub-text">${pubHead(p, "h3")}
+          <div class="pub-body">
+            <p class="authors">${boldPI(p.authors)}</p>
+            <p class="cite">${citeOf(p)}</p>
+            ${p.url ? `<div class="actions"><a class="link" href="${esc(p.url)}" target="_blank" rel="noopener">${linkIcon} Article</a></div>` : ""}
           </div>
         </div>
+        <div class="thumb">${p.img ? `<a href="#" data-lightbox="assets/img/pubs/${p.img}" data-caption="${esc(p.journal)} · ${esc(p.year)}" aria-label="Enlarge figure: ${esc(p.title)}">${thumbImg(p)}</a>` : `<span class="nofig">${esc(p.year)}</span>`}</div>
       </article>`;
-    const render = (filter) => {
+    const render = (filter, animate) => {
       let list = pubs;
       if (filter === "earlier") list = pubs.filter((p) => !recent.includes(p.year));
       else if (filter !== "all") list = pubs.filter((p) => p.year === Number(filter));
       let html = "", lastYear = null;
       list.forEach((p) => {
-        if (p.year !== lastYear) { html += `<div class="year-divider">${p.year}</div>`; lastYear = p.year; }
+        if (p.year !== lastYear) { html += `<h2 class="year-divider">${p.year}</h2>`; lastYear = p.year; }
         html += row(p);
       });
       listBox.innerHTML = html || `<p class="lead">No publications in this range.</p>`;
+      // short fade when the year filter changes (CSS turns it off for reduced-motion users)
+      if (animate) { listBox.classList.remove("is-switching"); void listBox.offsetWidth; listBox.classList.add("is-switching"); }
       if (countEl) countEl.textContent = `${list.length} of ${pubs.length} papers`;
     };
     if (filtersBox) {
       const opts = [["all", "All"], ...recent.map((y) => [String(y), String(y)]), ...(years.length > recent.length ? [["earlier", "Earlier"]] : [])];
-      filtersBox.innerHTML = opts.map(([v, l], i) => `<button class="filter-btn${i === 0 ? " active" : ""}" data-filter="${v}" type="button">${l}</button>`).join("");
+      filtersBox.innerHTML = opts.map(([v, l], i) => `<button class="filter-btn${i === 0 ? " active" : ""}" data-filter="${v}" type="button" aria-pressed="${i === 0}">${l}</button>`).join("");
       filtersBox.addEventListener("click", (e) => {
         const b = e.target.closest(".filter-btn"); if (!b) return;
-        $$(".filter-btn", filtersBox).forEach((x) => x.classList.toggle("active", x === b));
-        render(b.dataset.filter);
+        $$(".filter-btn", filtersBox).forEach((x) => { x.classList.toggle("active", x === b); x.setAttribute("aria-pressed", String(x === b)); });
+        render(b.dataset.filter, true);
       });
     }
     render("all");

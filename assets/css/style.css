@@ -3553,7 +3553,7 @@ html.js.page-out body {
   gap: 16px;
 }
 #pub-recent .pub-card {
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) 340px;
   gap: 28px;
   align-items: center;
   padding: 22px 26px;
@@ -4812,3 +4812,205 @@ html.js.page-out body {
 .pub-row h3 {
   text-wrap: pretty;
 }
+
+/* =====================================================================
+   v67 — Publications (home "Recent Publications" + publications.html)
+   Layout: text on the left, figure on the right (as before). Every figure
+           sits in the same fixed 340 × 240 frame, so every card has the
+           same height on both pages.
+   Motion (5 kinds, each ≤ 0.6 s, all off for prefers-reduced-motion):
+     1) scroll reveal of home cards                       0.5 s
+     2) card hover: lift + cyan→lime edge glow + figure zoom   0.3–0.4 s
+     3) button / link hover: lift + gloss sweep + arrow    0.2 s / 0.55 s
+     4) year-filter list fade                             0.25 s
+     5) figure lightbox open                              0.35 s
+   ===================================================================== */
+.pub-card,
+.pub-row {
+  display: grid;
+  align-items: start;
+  column-gap: 28px;
+  row-gap: 12px;
+}
+.pub-card,
+#pub-recent .pub-card {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-areas: none;
+  padding: 22px 26px;
+}
+.pub-row {
+  align-items: center;
+  grid-template-columns: 44px minmax(0, 1fr) 340px;
+  grid-template-areas: none;
+  padding: 22px 26px 22px 20px;
+}
+.pub-text { min-width: 0; }
+.pub-head-row { min-width: 0; }
+.pub-body { margin-top: 8px; min-width: 0; }
+
+/* figure frame: identical size for every paper */
+.pub-card .thumb,
+.pub-row .thumb {
+  order: 0;
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 17 / 12;
+  padding: 0;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pub-row .thumb a { position: absolute; inset: 0; display: block; }
+.pub-card .thumb img,
+.pub-row .thumb img {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  object-fit: contain;
+  padding: 0;
+}
+.pub-card .thumb .nofig,
+.pub-row .thumb .nofig { position: absolute; inset: 0; display: grid; place-items: center; }
+
+.pub-title,
+#pub-recent .pub-card .pub-title {
+  margin-top: 10px;
+  font-size: 17px;
+  line-height: 1.45;
+  font-weight: 700;
+  text-wrap: pretty;
+}
+.pub-title a { color: inherit; }
+.pub-body .authors { margin-top: 0; }
+
+/* readable small text (≥ 4.5:1) */
+#pub-count,
+.pub-legend,
+.pub-card .year,
+.pub-row .year,
+.pub-card .authors,
+.pub-row .authors { color: #5f6b7e; }
+.pub-card .journal,
+.pub-row .journal,
+.pub-row .link { color: #0b7285; }
+.pub-row .idx {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #6e7c91;
+  opacity: 1;
+}
+.year-divider { margin: 26px 0 4px; }
+
+/* no layout jump while the list is filled in by script */
+#pub-list:empty { min-height: 100vh; }
+#pub-recent:empty { min-height: 60vh; }
+
+/* ---- 2) card hover: lift + edge glow + figure zoom ---- */
+.pub-card,
+.pub-row { transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+.pub-card::before,
+.pub-row::before { display: block; transition: opacity 0.3s var(--ease); }
+.pub-card:hover,
+.pub-row:hover { transform: translateY(-3px); }
+.pub-card:hover::before,
+.pub-row:hover::before { opacity: 1; }
+.pub-card .thumb img,
+.pub-row .thumb img { transition: transform 0.4s var(--ease); }
+.pub-card:hover .thumb img,
+.pub-row:hover .thumb img { transform: scale(1.04); }
+
+/* ---- 1) scroll reveal ---- */
+#publications .reveal,
+.pub-card.reveal {
+  transition: opacity 0.4s var(--ease), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: 0s;
+}
+#publications .pub-card.reveal.in:hover { transform: translateY(-3px); }
+
+/* ---- 3) buttons & links: lift + gloss sweep ---- */
+@keyframes pubShine {
+  from { left: -60%; opacity: 0; }
+  20% { opacity: 1; }
+  to { left: 130%; opacity: 0; }
+}
+#publications .btn {
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+#publications .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 32, 56, 0.14); }
+#publications .btn:hover::after { animation: pubShine 0.55s var(--ease) forwards; }
+.pub-row .link,
+.filter-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.2s var(--ease), background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.pub-row .link::after,
+.filter-btn::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  left: -60%;
+  width: 40%;
+  transform: skewX(-22deg);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  opacity: 0;
+  pointer-events: none;
+}
+.pub-row .link:hover,
+.filter-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(11, 114, 133, 0.16); }
+.pub-row .link:hover::after,
+.filter-btn:hover::after { animation: pubShine 0.55s var(--ease) forwards; }
+.pub-row .link svg { transition: transform 0.2s var(--ease); }
+.pub-row .link:hover svg { transform: translate(2px, -2px); }
+
+/* ---- 4) year-filter fade ---- */
+@keyframes pubListFade { from { opacity: 0.35; } to { opacity: 1; } }
+.pub-list.is-switching { animation: pubListFade 0.25s var(--ease); }
+
+/* ---- 5) lightbox ---- */
+.lightbox { transition: opacity 0.25s var(--ease); }
+.lightbox img { transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1.1), opacity 0.25s var(--ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pub-card:hover,
+  .pub-row:hover,
+  #publications .pub-card.reveal.in:hover,
+  #publications .btn:hover,
+  .pub-row .link:hover,
+  .filter-btn:hover,
+  .pub-card:hover .thumb img,
+  .pub-row:hover .thumb img,
+  .pub-row .link:hover svg { transform: none; }
+  #publications .btn:hover::after,
+  .pub-row .link:hover::after,
+  .filter-btn:hover::after,
+  .pub-list.is-switching { animation: none; }
+  .lightbox img { transform: none; }
+}
+@media print {
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---- narrow screens: one column, frame keeps the same shape ---- */
+@media (max-width: 900px) {
+  .pub-card,
+  #pub-recent .pub-card,
+  .pub-row {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 18px;
+  }
+  .pub-row .idx { display: none; }
+  .pub-card .thumb,
+  .pub-row .thumb { max-width: 360px; }
+}
+
+/* top banner: keep "Apply" on one line on phones */
+.topbar-cta { white-space: nowrap; }

@@ -17,7 +17,7 @@
   const PI = "Kyobin Park";
   const citeOf = (p) => p.status
     ? `<i>${esc(p.journal)}</i>, ${esc(p.status)} (${esc(p.year)})`
-    : `<i>${esc(p.journal)}</i>, <b>${esc(p.vol)}</b>, ${esc(p.pages)} (${esc(p.year)})`;
+    : `<i>${esc(p.journal)}</i>${p.vol ? `, <b>${esc(p.vol)}</b>` : ""}${p.pages ? `, ${esc(p.pages)}` : ""} (${esc(p.year)})`;
   const statusTag = (p) => (p.status ? `<span class="pub-status">${esc(p.status)}</span>` : "");
   const titleLink = (p) => (p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>` : esc(p.title));
   const boldPI = (authors) => esc(authors).replace(new RegExp(PI + "[†*]*", "g"), (m) => `<b>${m}</b>`);

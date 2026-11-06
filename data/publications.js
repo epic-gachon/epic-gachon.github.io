@@ -5,15 +5,16 @@
    홈의 Recent Publications 에는 배열 맨 위 4개가 자동 표시됩니다.
    authors: † 공동 제1저자, * 교신저자 표시 그대로 입력
    status: "Accepted" 등 (게재 전 논문) — vol/pages/url 은 "" 로 두고, 출판되면 status 를 지우고 채우면 됩니다.
+   온라인 게재 후 권(vol)이 아직 없으면 vol: "" 로 두면 "저널명, 페이지 (연도)"로 표시됩니다.
    인용 형식(구글사이트와 동일): 저널명, 권, 페이지 (연도) → journal / vol / pages / year 로 나눠 입력
    ===================================================================== */
 window.EPIC_PUBS = [
   {
-    n: 20, year: 2026, journal: "Advanced Energy Materials", featured: true, status: "Accepted",
-    title: "Engineering Energy-Storage Interfaces with Atomic and Molecular Layer Deposition: From Surface Chemistry to Process Design",
+    n: 20, year: 2026, journal: "Advanced Energy Materials", featured: true,
+    title: "Engineering Energy-Storage Interfaces With Atomic and Molecular Layer Deposition: From Surface Chemistry to Process Design",
     authors: "Kyobin Park*, Jeffrey W. Elam*",
-    vol: "", pages: "",
-    url: "",
+    vol: "", pages: "e71803",
+    url: "https://doi.org/10.1002/aenm.71803",
     img: "p20.jpg", tags: ["ALD", "MLD", "Interface"]
   },
   {

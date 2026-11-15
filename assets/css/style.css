@@ -5014,3 +5014,9 @@ html.js.page-out body {
 
 /* top banner: keep "Apply" on one line on phones */
 .topbar-cta { white-space: nowrap; }
+
+/* v70 — Home gallery: 제목 칸을 항상 2줄 높이로 확보 → 제목 길이와 상관없이 사진 크기 동일 */
+#gallery-home .gcard-cap .gcard-title {
+  line-height: 1.4;
+  min-height: 2.8em;
+}

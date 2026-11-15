@@ -6,6 +6,7 @@
    photos : 한 테마의 사진들 (2장 이상이면 옆으로 넘겨 보기)
    ===================================================================== */
 window.EPIC_GALLERY = [
+  { date: "2026.11.11", title: "국립순천대학교 최근호 교수님 초청 세미나", photos: ["gallery/2026-11-11-seminar-choi.jpg"] },
   { date: "2026.05.29", title: "인하대학교 김민규 교수님 초청 세미나", photos: ["gallery/2026-05-29-seminar-kim.jpg"] },
   { date: "2026.05.13", title: "고려대학교 박혁준 교수님 초청 세미나", photos: ["gallery/2026-05-13-seminar-park.jpg"] },
 ];

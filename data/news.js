@@ -10,6 +10,11 @@
    ===================================================================== */
 window.EPIC_NEWS = [
   {
+    date: "2026.11.11", type: "Hosted",
+    title: "국립순천대학교 에너지응용공학전공 최근호 교수님 초청 세미나",
+    text: "국립순천대학교 에너지응용공학전공 최근호 교수님을 초청하여 “Design and Engineering of Li- and Mn-Rich Layered Oxide Cathodes”를 주제로 세미나를 개최하였습니다. 방문해주셔서 감사합니다! 👏"
+  },
+  {
     date: "2026.10.16", type: "Invited",
     title: "2026 한국에너지학회 추계학술발표회 초청 발표 (Jeju, KR)",
     text: "아주대학교 화학공학과 황종국 교수님의 초청으로 2026 한국에너지학회 추계학술발표회 「차세대 이차전지 소재 및 핵심기술」 특별세션(한국에너지기술연구원 제주글로벌연구센터)에서 “Engineering Electrochemical Interfaces: Bridging Electrolyte Chemistry and Mechanics”를 주제로 발표를 진행하였습니다. 초청해주셔서 감사합니다! 🙏"
